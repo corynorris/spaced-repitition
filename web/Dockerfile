@@ -1,12 +1,22 @@
-# web/Dockerfile
-FROM node:20-alpine as builder
+FROM node:20-alpine AS builder
+
+# Install pnpm
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
 WORKDIR /app
-COPY package*.json ./
-RUN npm ci
 
+# Copy pnpm specific files
+COPY pnpm-lock.yaml ./
+COPY package.json ./
+
+# Install dependencies
+RUN pnpm install --frozen-lockfile
+
+# Copy source code
 COPY . .
-RUN npm run build
+
+# Build the application
+RUN pnpm run build
 
 # Production stage
 FROM nginx:alpine
