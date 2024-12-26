@@ -40,3 +40,5 @@ async-trait = "0.1.83"
 rand = "0.8.5"
 thiserror = "2.0.9"
 governor = "0.8.0"
+async-graphql = { version = "7.0.13", features = ["time"] }
+async-graphql-axum = "7.0.13"

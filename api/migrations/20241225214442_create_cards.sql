@@ -14,6 +14,7 @@ SELECT trigger_updated_at('"card_type"');
 CREATE TABLE "card" (
     card_id UUID PRIMARY KEY DEFAULT UUID_GENERATE_V1MC(),
     type_id UUID NOT NULL REFERENCES card_type(type_id),
+    title TEXT NOT NULL,
     content JSONB NOT NULL,
     is_public BOOLEAN NOT NULL DEFAULT false,
     created_by_user_id UUID NOT NULL REFERENCES "user"(user_id),
