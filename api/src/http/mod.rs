@@ -35,14 +35,10 @@ async fn graphql_handler(
 ) -> GraphQLResponse {
     let mut req = req.into_inner();
 
-    // Add database 
+    // Add database, auth_key, and auth_user to the context
     req = req.data(ctx.db)
-    
-    // Add auth_key to the context
-    req = req.data(ctx.auth_key);
-
-    // Add auth_user to the context
-    req = req.data(auth_user.map(|user| user.0));
+             .data(ctx.auth_key)
+             .data(auth_user.map(|user| user.0));
 
     schema.execute(req).await.into()
 }
