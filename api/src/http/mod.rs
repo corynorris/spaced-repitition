@@ -5,7 +5,6 @@ use crate::graphql::{build_schema, SpacedRepetitionSchema};
 
 use async_graphql::http::{GraphiQLPlugin, GraphiQLSource};
 use async_graphql_axum::{GraphQLRequest, GraphQLResponse};
-use axum::response::Html;
 use axum::{
     response::{self, IntoResponse},
     routing::get,
@@ -45,8 +44,8 @@ async fn graphiql() -> impl IntoResponse {
     let plugins = vec![GraphiQLPlugin {
         name: "graphiql-plugin-explorer",
         constructor: "GraphiQLPluginExplorer.explorerPlugin",
-        head_assets: Some("<link  rel=\"stylesheet\" href=\"https://unpkg.com/@graphiql/plugin-explorer@3.2.5/dist/style.css\">"),
-        body_assets: Some("<script src=\"https://unpkg.com/@graphiql/plugin-explorer@3.2.5/dist/index.umd.js\"></script>"),
+        head_assets: Some("<link  rel=\"stylesheet\" href=\"https://unpkg.com/@graphiql/plugin-explorer@4.0.0-alpha.2/dist/style.css\">"),
+        body_assets: Some("<script src=\"https://unpkg.com/@graphiql/plugin-explorer@4.0.0-alpha.2/dist/index.umd.js\"></script>"),
         pre_configs: None,
         props: None,
     }];
