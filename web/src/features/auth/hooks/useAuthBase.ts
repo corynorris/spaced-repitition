@@ -52,16 +52,11 @@ export function useAuthBase() {
     mutationFn: async (credentials: LoginCredentials) => {
       const response = await fetch("/api/users/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ user: credentials }),
       });
 
-      if (!response.ok) {
-        throw new Error("Login failed");
-      }
-
+      if (!response.ok) throw new Error("Login failed");
       const data = (await response.json()) as ApiResponse;
       return data.user;
     },
@@ -103,8 +98,8 @@ export function useAuthBase() {
     user: user ?? null,
     isAuthenticated: !!user,
     loading: isLoading && !!storedUser?.token,
-    login: login.mutate,
-    register: register.mutate,
+    login: login.mutateAsync,
+    register: register.mutateAsync,
     clearUser,
   } as const;
 }

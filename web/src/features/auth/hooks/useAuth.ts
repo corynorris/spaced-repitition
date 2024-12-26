@@ -1,4 +1,5 @@
 import { useNavigate, useRouter } from "@tanstack/react-router";
+import { LoginCredentials, RegisterCredentials } from "../types";
 import { useAuthBase } from "./useAuthBase";
 
 export function useAuth() {
@@ -6,16 +7,16 @@ export function useAuth() {
   const router = useRouter();
   const navigate = useNavigate();
 
-  const login: typeof auth.login = async (...args) => {
-    await auth.login(...args);
-    setTimeout(() => {
-      navigate({ to: "/" });
-    }, 1000);
+  const login = async (credentials: LoginCredentials) => {
+    const user = await auth.login(credentials);
+    navigate({ to: "/" });
+    return user;
   };
 
-  const register: typeof auth.register = async (...args) => {
-    await auth.register(...args);
+  const register = async (credentials: RegisterCredentials) => {
+    const user = await auth.register(credentials);
     navigate({ to: "/" });
+    return user;
   };
 
   const logout = async () => {

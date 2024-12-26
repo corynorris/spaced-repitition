@@ -26,6 +26,7 @@ export function RegisterForm() {
   const onSubmit = async (data: RegisterFormData) => {
     try {
       await registerUser(data);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       setFormError("root", {
         type: "manual",
@@ -50,7 +51,7 @@ export function RegisterForm() {
             <input
               id="username"
               type="text"
-              className="relative block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              className="relative block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               placeholder="Username"
               {...register("username")}
             />
@@ -68,7 +69,7 @@ export function RegisterForm() {
               id="email"
               type="email"
               autoComplete="email"
-              className="relative block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              className="relative block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               placeholder="Email address"
               {...register("email")}
             />
@@ -86,7 +87,7 @@ export function RegisterForm() {
               id="password"
               type="password"
               autoComplete="new-password"
-              className="relative block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              className="relative block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               placeholder="Password"
               {...register("password")}
             />

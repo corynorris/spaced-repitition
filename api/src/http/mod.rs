@@ -11,6 +11,7 @@ mod error;
 mod extractor;
 mod types;
 mod users;
+mod cards;
 
 pub use error::{Error, ResultExt};
 
@@ -46,5 +47,5 @@ pub async fn start_server(config: Config, db: PgPool) -> anyhow::Result<()> {
 /// Defines the application's routes.
 fn api_router() -> Router {
     users::router()
-        // Additional routes can be merged here.
+        .merge(cards::router())
 }
