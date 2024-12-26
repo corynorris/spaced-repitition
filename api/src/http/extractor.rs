@@ -1,7 +1,6 @@
 use crate::auth::AuthUser;
 use crate::error::Error;
 use crate::http::ApiContext;
-
 use async_trait::async_trait;
 use axum::extract::{Extension, FromRequestParts};
 use axum::http::header::AUTHORIZATION;

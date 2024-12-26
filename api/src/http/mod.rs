@@ -1,4 +1,4 @@
-use crate::auth::AuthKey;
+use crate::auth::{AuthKey, AuthUser};
 use crate::config::Config;
 use crate::error::Error;
 use crate::graphql::{build_schema, SpacedRepetitionSchema};
@@ -10,6 +10,7 @@ use axum::{
     routing::get,
     Extension, Router,
 };
+use log::debug;
 use sqlx::PgPool;
 use tokio::net::TcpListener;
 use tower::ServiceBuilder;
@@ -34,8 +35,14 @@ async fn graphql_handler(
 ) -> GraphQLResponse {
     let mut req = req.into_inner();
 
-    // Add context data that will be available to resolvers
-    req = req.data(ctx.db).data(ctx.auth_key).data(auth_user);
+    // Add database 
+    req = req.data(ctx.db)
+    
+    // Add auth_key to the context
+    req = req.data(ctx.auth_key);
+
+    // Add auth_user to the context
+    req = req.data(auth_user.map(|user| user.0));
 
     schema.execute(req).await.into()
 }

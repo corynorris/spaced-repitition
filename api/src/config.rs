@@ -9,7 +9,7 @@ pub struct Config {
 
     #[arg(long, env = "DATABASE_MAX_CONNECTIONS", default_value = "50")]
     pub database_max_connections: u32,
-    
+
     /// The HMAC signing and verification key used for login tokens (JWTs).
     #[arg(long, env = "HMAC_KEY")]
     pub hmac_key: String,
@@ -23,7 +23,11 @@ pub struct Config {
     pub host: String,
 
     /// Log level configuration.
-    #[arg(long, env = "RUST_LOG", default_value = "spaced_repetition_api=debug,tower_http=debug")]
+    #[arg(
+        long,
+        env = "RUST_LOG",
+        default_value = "spaced_repetition_api=debug,tower_http=debug"
+    )]
     pub log_level: String,
 }
 
@@ -40,7 +44,7 @@ impl Config {
         if std::env::var("RUST_LOG").is_err() {
             std::env::set_var("RUST_LOG", &self.log_level);
         }
-        
-        env_logger::init();
+
+        env_logger::init_from_env(env_logger::Env::default().default_filter_or(&self.log_level));
     }
 }

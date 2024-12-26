@@ -4,6 +4,7 @@ use crate::{
     graphql::{types::user::*, Result, Timestamptz},
 };
 use async_graphql::*;
+use log::{error, info};
 use sqlx::PgPool;
 
 pub struct UserQuery;
@@ -17,11 +18,13 @@ impl UserQuery {
 
         match auth_user {
             Some(auth) => {
-                let user = sqlx::query_as!(
+                info!("Fetching current user with user_id: {}", auth.user_id);
+
+                let user = match sqlx::query_as!(
                     User,
                     r#"
                     SELECT 
-                        user_id as "user_id: String",
+                        user_id,
                         username,
                         email,
                         created_at as "created_at?: Timestamptz"
@@ -31,7 +34,16 @@ impl UserQuery {
                     auth.user_id,
                 )
                 .fetch_one(pool)
-                .await?;
+                .await
+                {
+                    Ok(user) => user,
+                    Err(e) => {
+                        error!("Failed to fetch user from database: {}", e);
+                        return Err(e.into());
+                    }
+                };
+
+                info!("Successfully fetched user: {}", user.username);
 
                 Ok(Some(User {
                     user_id: user.user_id.into(),
@@ -40,7 +52,10 @@ impl UserQuery {
                     created_at: user.created_at,
                 }))
             }
-            None => Ok(None),
+            None => {
+                info!("No authenticated user found in context");
+                Ok(None)
+            }
         }
     }
 }
