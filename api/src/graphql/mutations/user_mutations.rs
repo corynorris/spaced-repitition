@@ -1,65 +1,10 @@
 use crate::{
-    auth::{AuthKey, AuthUser, PasswordManager},
+    auth::{AuthKey, AuthUser, PasswordManager, UserRole},
     error::{Error, ResultExt},
-    graphql::{types::user::*, Result, Timestamptz},
+    graphql::{models::user::*, Result, Timestamptz},
 };
 use async_graphql::*;
-use log::{error, info};
 use sqlx::PgPool;
-
-pub struct UserQuery;
-
-#[Object]
-impl UserQuery {
-    /// Get the currently authenticated user
-    async fn me(&self, ctx: &Context<'_>) -> Result<Option<User>> {
-        let auth_user = ctx.data::<Option<AuthUser>>()?;
-        let pool = ctx.data::<PgPool>()?;
-
-        match auth_user {
-            Some(auth) => {
-                info!("Fetching current user with user_id: {}", auth.user_id);
-
-                let user = match sqlx::query_as!(
-                    User,
-                    r#"
-                    SELECT 
-                        user_id,
-                        username,
-                        email,
-                        created_at as "created_at?: Timestamptz"
-                    FROM "user"
-                    WHERE user_id = $1
-                    "#,
-                    auth.user_id,
-                )
-                .fetch_one(pool)
-                .await
-                {
-                    Ok(user) => user,
-                    Err(e) => {
-                        error!("Failed to fetch user from database: {}", e);
-                        return Err(e.into());
-                    }
-                };
-
-                info!("Successfully fetched user: {}", user.username);
-
-                Ok(Some(User {
-                    user_id: user.user_id.into(),
-                    username: user.username,
-                    email: user.email,
-                    created_at: user.created_at,
-                }))
-            }
-            None => {
-                info!("No authenticated user found in context");
-                Ok(None)
-            }
-        }
-    }
-}
-
 pub struct UserMutation;
 
 #[Object]
@@ -70,11 +15,18 @@ impl UserMutation {
 
         let password_hash = PasswordManager::hash_password(input.password).await?;
 
-        let user = sqlx::query!(
+        let user_row = sqlx::query_as!(
+            UserRow,
             r#"
             INSERT INTO "user" (username, email, password_hash)
             VALUES ($1, $2, $3)
-            RETURNING user_id, email, username, created_at
+            RETURNING 
+                user_id,
+                role as "role: UserRole",
+                email,
+                username,
+                created_at,
+                updated_at
             "#,
             input.username,
             input.email,
@@ -92,17 +44,13 @@ impl UserMutation {
         })?;
 
         let auth_user = AuthUser {
-            user_id: user.user_id,
+            user_id: user_row.user_id,
+            role: user_row.role,
         };
 
         Ok(AuthPayload {
             token: auth_user.create_token(auth_key),
-            user: User {
-                user_id: user.user_id.into(),
-                email: user.email,
-                username: user.username,
-                created_at: Option::from(user.created_at).map(Timestamptz),
-            },
+            user: user_row.into(),
         })
     }
 
@@ -112,7 +60,7 @@ impl UserMutation {
 
         let user = sqlx::query!(
             r#"
-            SELECT user_id, email, username, password_hash, created_at
+            SELECT user_id, email, username, password_hash, role as "role: UserRole", created_at, updated_at
             FROM "user"
             WHERE email = $1
             "#,
@@ -126,6 +74,7 @@ impl UserMutation {
 
         let auth_user = AuthUser {
             user_id: user.user_id,
+            role: user.role,
         };
 
         Ok(AuthPayload {
@@ -134,7 +83,8 @@ impl UserMutation {
                 user_id: user.user_id.into(),
                 email: user.email,
                 username: user.username,
-                created_at: Option::from(user.created_at).map(Timestamptz),
+                created_at: Timestamptz(user.created_at),
+                updated_at: Option::from(user.updated_at.map(Timestamptz)),
             },
         })
     }
@@ -159,7 +109,7 @@ impl UserMutation {
                 username = coalesce($2, username),
                 password_hash = coalesce($3, password_hash)
             WHERE user_id = $4
-            RETURNING email, username, created_at
+            RETURNING email, username, created_at, updated_at
             "#,
             input.email,
             input.username,
@@ -181,7 +131,8 @@ impl UserMutation {
             user_id: auth_user.user_id.into(),
             email: user.email,
             username: user.username,
-            created_at: Option::from(user.created_at).map(Timestamptz),
+            created_at: Timestamptz(user.created_at),
+            updated_at: Option::from(user.updated_at.map(Timestamptz)),
         })
     }
 }

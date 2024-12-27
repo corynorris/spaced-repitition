@@ -1,6 +1,7 @@
-use crate::auth::{AuthKey, AuthUser};
+use crate::auth::AuthKey;
 use crate::config::Config;
 use crate::error::Error;
+use crate::graphql::dataloaders::Loaders;
 use crate::graphql::{build_schema, SpacedRepetitionSchema};
 
 use async_graphql::http::{GraphiQLPlugin, GraphiQLSource};
@@ -10,7 +11,7 @@ use axum::{
     routing::get,
     Extension, Router,
 };
-use log::debug;
+use extractor::OptionalUser;
 use sqlx::PgPool;
 use tokio::net::TcpListener;
 use tower::ServiceBuilder;
@@ -25,20 +26,18 @@ pub type Result<T, E = Error> = std::result::Result<T, E>;
 pub struct ApiContext {
     pub db: PgPool,
     pub auth_key: AuthKey,
+    pub loaders: Loaders,
 }
 
 async fn graphql_handler(
     Extension(schema): Extension<SpacedRepetitionSchema>,
     Extension(ctx): Extension<ApiContext>,
-    auth_user: Option<extractor::RequiredUser>,
+    auth_user: OptionalUser,
     req: GraphQLRequest,
 ) -> GraphQLResponse {
     let mut req = req.into_inner();
 
-    // Add database, auth_key, and auth_user to the context
-    req = req.data(ctx.db)
-             .data(ctx.auth_key)
-             .data(auth_user.map(|user| user.0));
+    req = req.data(ctx.db).data(ctx.auth_key).data(auth_user.0);
 
     schema.execute(req).await.into()
 }
@@ -70,8 +69,9 @@ pub async fn start_server(config: Config, db: PgPool) -> anyhow::Result<()> {
         .layer(
             ServiceBuilder::new()
                 .layer(Extension(ApiContext {
-                    db,
+                    db: db.clone(),
                     auth_key: AuthKey::new(&config.hmac_key),
+                    loaders: Loaders::new(db),
                 }))
                 .layer(Extension(schema))
                 .layer(TraceLayer::new_for_http()),

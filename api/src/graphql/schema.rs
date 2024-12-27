@@ -1,4 +1,4 @@
-use super::{mutation::MutationRoot, query::QueryRoot};
+use super::{MutationRoot, QueryRoot};
 use crate::error::Error;
 use async_graphql::{EmptySubscription, Schema};
 

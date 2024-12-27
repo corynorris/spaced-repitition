@@ -4,6 +4,7 @@ use argon2::{
 };
 use hmac::{Hmac, Mac};
 use jwt::{SignWithKey, VerifyWithKey};
+use serde::{Deserialize, Serialize};
 use sha2::Sha384;
 use std::sync::Arc;
 use time::OffsetDateTime;
@@ -13,18 +14,27 @@ use crate::error::Error;
 
 pub const DEFAULT_SESSION_LENGTH: time::Duration = time::Duration::weeks(2);
 
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, sqlx::Type)]
+#[sqlx(type_name = "user_role", rename_all = "lowercase")]
+pub enum UserRole {
+    User,
+    Admin,
+}
+
 /// Core authenticated user type
 #[derive(Clone, Debug)]
 pub struct AuthUser {
     pub user_id: Uuid,
+    pub role: UserRole,
 }
 
 /// Claims structure for JWT tokens
-#[derive(serde::Serialize, serde::Deserialize)]
+#[derive(Serialize, Deserialize)]
 struct Claims {
     sub: String,
     user_id: Uuid,
     exp: i64,
+    role: UserRole,
 }
 
 /// Signing/verification key for JWT tokens
@@ -83,6 +93,7 @@ impl AuthUser {
             sub: self.user_id.to_string(),
             user_id: self.user_id,
             exp: (OffsetDateTime::now_utc() + DEFAULT_SESSION_LENGTH).unix_timestamp(),
+            role: self.role.clone(),
         };
 
         claims
@@ -116,6 +127,7 @@ impl AuthUser {
 
         Ok(Self {
             user_id: claims.user_id,
+            role: claims.role,
         })
     }
 }
