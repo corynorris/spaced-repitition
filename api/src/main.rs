@@ -3,7 +3,7 @@ use clap::Parser;
 use sqlx::postgres::PgPoolOptions;
 
 use spaced_repetition_api::application::http;
-use spaced_repetition_api::infrastructure::config::Config;
+use spaced_repetition_api::config::Config;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {

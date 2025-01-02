@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use uuid::Uuid;
 
 use crate::domain::{
@@ -11,12 +13,12 @@ use crate::domain::{
 /// CourseService handles all course-related business logic and coordinates between
 /// the policy layer and repository layer.
 pub struct CourseService {
-    repo: CourseRepository,
+    repo: Arc<CourseRepository>,
     policy: CoursePolicy,
 }
 
 impl CourseService {
-    pub fn new(repo: CourseRepository) -> Self {
+    pub fn new(repo: Arc<CourseRepository>) -> Self {
         Self {
             repo,
             policy: CoursePolicy::new(),
@@ -67,7 +69,13 @@ impl CourseService {
         auth_user: Option<&AuthUser>,
         user_id: Uuid,
     ) -> DomainResult<Vec<CourseSummary>> {
-        // Check if authorized to view user's courses
+        if !self.policy.can_list_user_courses(auth_user, user_id) {
+            return Err(DomainError::InsufficientPermissions {
+                action: "list",
+                resource: "user_courses",
+            });
+        }
+
         match auth_user {
             Some(auth_user) if auth_user.user_id == user_id || auth_user.role.is_admin() => {
                 // Return all courses for owner/admin
@@ -115,13 +123,12 @@ impl CourseService {
     }
 
     /// Publish/unpublish a course
-    pub async fn set_course_published(
+    pub async fn publish_course(
         &self,
         auth_user: &AuthUser,
         course_id: Uuid,
-        is_published: bool,
     ) -> DomainResult<Course> {
-        let course = self.repo.get_by_id(course_id).await?;
+        let course: Course = self.repo.get_by_id(course_id).await?;
 
         if !self.policy.can_modify(auth_user, &course) {
             return Err(DomainError::InsufficientPermissions {
@@ -130,7 +137,7 @@ impl CourseService {
             });
         }
 
-        self.repo.set_published(course_id, is_published).await
+        self.repo.set_published(course_id, true).await
     }
 
     /// Delete a course if authorized

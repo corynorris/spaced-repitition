@@ -1,13 +1,9 @@
-use crate::application::graphql::dataloaders::LessonDataLoader;
 use crate::application::graphql::Timestamptz;
 use crate::domain::models::course::{Course, CourseSummary};
 use async_graphql::*;
-use dataloader::DataLoader;
-
-use super::LessonObject;
 
 #[derive(Debug, SimpleObject)]
-#[graphql(complex, name = "Course")]
+#[graphql(name = "Course")]
 pub struct CourseObject {
     pub course_id: ID,
     pub user_id: ID,
@@ -27,7 +23,7 @@ pub struct CourseSummaryObject {
     pub lesson_count: i64,
     pub total_cards: i64,
     pub created_at: Timestamptz,
-    pub last_updated: Timestamptz,
+    pub updated_at: Option<Timestamptz>,
 }
 
 #[derive(Debug, InputObject)]
@@ -65,24 +61,7 @@ impl From<CourseSummary> for CourseSummaryObject {
             lesson_count: domain.lesson_count,
             total_cards: domain.total_cards,
             created_at: domain.created_at.into(),
-            last_updated: domain.last_updated.into(),
+            updated_at: domain.updated_at.map(Into::into),
         }
-    }
-}
-
-#[ComplexObject]
-impl CourseObject {
-    /// Get all lessons for this course
-    async fn lessons(&self, ctx: &Context<'_>) -> Result<Vec<LessonObject>> {
-        let course_id = uuid::Uuid::parse_str(&self.course_id.to_string())?;
-        let lesson_dataloader = ctx.data::<DataLoader<LessonDataLoader>>()?;
-
-        let domain_lessons = lesson_dataloader.load_one(course_id).await?;
-
-        Ok(domain_lessons
-            .unwrap_or_default()
-            .into_iter()
-            .map(LessonObject::from)
-            .collect())
     }
 }

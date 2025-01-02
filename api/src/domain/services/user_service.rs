@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use uuid::Uuid;
 
 use crate::domain::{
@@ -20,13 +22,13 @@ use crate::domain::{
 /// UserService handles all user-related business logic and coordinates between
 /// the policy layer, repository layer, and authentication.
 pub struct UserService {
-    repo: UserRepository,
+    repo: Arc<UserRepository>,
     policy: UserPolicy,
     auth_key: AuthKey,
 }
 
 impl UserService {
-    pub fn new(repo: UserRepository, auth_key: AuthKey) -> Self {
+    pub fn new(repo: Arc<UserRepository>, auth_key: AuthKey) -> Self {
         Self {
             repo,
             policy: UserPolicy::new(),

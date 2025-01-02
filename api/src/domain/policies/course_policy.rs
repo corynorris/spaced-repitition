@@ -38,10 +38,9 @@ impl CoursePolicy {
     /// This covers updating, publishing/unpublishing, and deleting
     ///
     /// Rules:
-    /// - Only the course owner can modify their courses
-    /// - Even admins cannot modify others' courses
+    /// - Only the course owner or an admin can modify courses
     pub fn can_modify(&self, auth_user: &AuthUser, course: &Course) -> bool {
-        auth_user.user_id == course.user_id
+        auth_user.user_id == course.user_id || auth_user.role.is_admin()
     }
 
     /// Check if a user can list courses for the target user
@@ -123,8 +122,8 @@ mod tests {
         // Owner can modify their course
         assert!(policy.can_modify(&owner, &course));
 
-        // Even admins cannot modify others' courses
-        assert!(!policy.can_modify(&admin, &course));
+        // Admins can modify any course
+        assert!(policy.can_modify(&admin, &course));
 
         // Other users cannot modify the course
         assert!(!policy.can_modify(&other_user, &course));

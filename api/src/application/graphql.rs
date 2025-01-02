@@ -1,4 +1,3 @@
-pub mod dataloaders;
 pub mod guards;
 pub mod mutations;
 pub mod queries;

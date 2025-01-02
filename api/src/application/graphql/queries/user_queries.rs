@@ -1,9 +1,7 @@
 use crate::application::graphql::guards::RoleGuard;
+use crate::domain::auth::AuthUser;
 use crate::domain::models::Role;
-use crate::{
-    application::graphql::types::user::UserObject, domain::services::UserService,
-    infrastructure::auth::AuthUser,
-};
+use crate::{application::graphql::types::user::UserObject, domain::services::UserService};
 use async_graphql::*;
 use std::sync::Arc;
 use uuid::Uuid;

@@ -1,7 +1,7 @@
 use crate::application::container::ServiceContainer;
 use crate::application::graphql::{build_schema, SpacedRepetitionSchema};
-use crate::errors::AppError;
-use crate::infrastructure::config::Config;
+use crate::config::Config;
+use crate::domain::auth::{AuthKey, AuthUser};
 
 use async_graphql::http::{GraphiQLPlugin, GraphiQLSource};
 use async_graphql_axum::{GraphQLRequest, GraphQLResponse};
@@ -16,8 +16,6 @@ use tower::ServiceBuilder;
 use tower_http::trace::TraceLayer;
 
 use super::container::ApiContext;
-
-pub type Result<T, E = AppError> = std::result::Result<T, E>;
 
 async fn graphiql() -> impl IntoResponse {
     let plugins = vec![GraphiQLPlugin {
@@ -41,24 +39,36 @@ async fn graphiql() -> impl IntoResponse {
 async fn graphql_handler(
     Extension(schema): Extension<SpacedRepetitionSchema>,
     Extension(ctx): Extension<ApiContext>,
+    headers: axum::http::HeaderMap,
     req: GraphQLRequest,
 ) -> GraphQLResponse {
+    let auth_header = headers
+        .get(axum::http::header::AUTHORIZATION)
+        .and_then(|h| h.to_str().ok());
+
+    let user = extract_user(auth_header, &ctx.auth_key).await;
+
     let mut request = req.into_inner();
     request = request
         .data(ctx.auth_key.clone())
-        .data(ctx.course_service.clone())
         .data(ctx.user_service.clone())
-        .data(ctx.lesson_service.clone())
-        .data(ctx.data_loaders.clone());
+        .data(ctx.course_service.clone())
+        .data(user); // Add user to context
 
     schema.execute(request).await.into()
 }
 
-/// Starts the server with given configuration and database connection
+async fn extract_user(auth_header: Option<&str>, auth_key: &AuthKey) -> Option<AuthUser> {
+    auth_header
+        .and_then(|h| h.strip_prefix("Bearer "))
+        .and_then(|token| AuthUser::from_token(token, auth_key).ok())
+}
+
+/// Starts the server with given configuration and
 pub async fn start_server(config: Config, db: PgPool) -> anyhow::Result<()> {
     let schema = build_schema(db.clone());
 
-    let container = ServiceContainer::new(config.clone(), db)?;
+    let container: ServiceContainer = ServiceContainer::new(config.clone(), db)?;
 
     let app = Router::new()
         .route("/api/graphql", get(graphiql).post(graphql_handler))

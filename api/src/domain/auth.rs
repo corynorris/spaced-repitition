@@ -37,7 +37,7 @@ pub struct AuthKey(Arc<Hmac<Sha384>>);
 impl AuthKey {
     pub fn new(secret: &str) -> DomainResult<Self> {
         let hmac = Hmac::<Sha384>::new_from_slice(secret.as_bytes()).map_err(|e| {
-            DomainError::BusinessRuleViolation(format!("Failed to create HMAC key: {}", e))
+            DomainError::CryptographyError(format!("Failed to create HMAC key: {}", e))
         })?;
         Ok(Self(Arc::new(hmac)))
     }
@@ -57,25 +57,23 @@ impl PasswordManager {
             PasswordHash::generate(Argon2::default(), password, &salt)
                 .map(|hash| hash.to_string())
                 .map_err(|e| {
-                    DomainError::BusinessRuleViolation(format!("Failed to hash password: {}", e))
+                    DomainError::CryptographyError(format!("Failed to hash password: {}", e))
                 })
         })
         .await
-        .map_err(|_| {
-            DomainError::BusinessRuleViolation("Password hashing task failed".to_string())
-        })?
+        .map_err(|_| DomainError::CryptographyError("Password hashing task failed".to_string()))?
     }
 
     pub async fn verify_password(password: String, password_hash: String) -> DomainResult<()> {
         tokio::task::spawn_blocking(move || {
             let hash = PasswordHash::new(&password_hash).map_err(|e| {
-                DomainError::BusinessRuleViolation(format!("Invalid password hash: {}", e))
+                DomainError::CryptographyError(format!("Invalid password hash: {}", e))
             })?;
 
             hash.verify_password(&[&Argon2::default()], password)
                 .map_err(|e| match e {
                     argon2::password_hash::Error::Password => DomainError::InvalidCredentials,
-                    _ => DomainError::BusinessRuleViolation(format!(
+                    _ => DomainError::CryptographyError(format!(
                         "Password verification failed: {}",
                         e
                     )),
@@ -83,7 +81,7 @@ impl PasswordManager {
         })
         .await
         .map_err(|_| {
-            DomainError::BusinessRuleViolation("Password verification task failed".to_string())
+            DomainError::CryptographyError("Password verification task failed".to_string())
         })?
     }
 }
@@ -99,25 +97,25 @@ impl AuthUser {
 
         claims
             .sign_with_key(key.key())
-            .map_err(|e| DomainError::BusinessRuleViolation(format!("Failed to sign JWT: {}", e)))
+            .map_err(|e| DomainError::CryptographyError(format!("Failed to sign JWT: {}", e)))
     }
 
     pub fn from_token(token: &str, key: &AuthKey) -> DomainResult<Self> {
         let claims: Claims = token.verify_with_key(key.key()).map_err(|e| {
             log::debug!("Failed to verify token: {}", e);
-            DomainError::BusinessRuleViolation("Invalid authentication token".to_string())
+            DomainError::CryptographyError("Invalid authentication token".to_string())
         })?;
 
         if claims.exp < OffsetDateTime::now_utc().unix_timestamp() {
             log::debug!("Token expired");
-            return Err(DomainError::BusinessRuleViolation(
+            return Err(DomainError::CryptographyError(
                 "Authentication token has expired".to_string(),
             ));
         }
 
         if claims.sub != claims.user_id.to_string() {
             log::debug!("Subject claim doesn't match user_id");
-            return Err(DomainError::BusinessRuleViolation(
+            return Err(DomainError::CryptographyError(
                 "Invalid token subject".to_string(),
             ));
         }

@@ -1,7 +1,6 @@
 /// Application layer: GraphQL API and HTTP server implementation
 pub mod application {
     pub mod container;
-    pub mod errors;
     pub mod graphql;
     pub mod http;
 }
@@ -16,7 +15,4 @@ pub mod domain {
     pub mod services;
 }
 
-/// Infrastructure layer: Authentication, configuration, and error handling
-pub mod infrastructure {
-    pub mod config;
-}
+pub mod config;

@@ -34,6 +34,9 @@ pub enum DomainError {
 
     #[error("invalid credentials")]
     InvalidCredentials,
+
+    #[error("cryptographic error: {0}")]
+    CryptographyError(String),
 }
 
 pub type DomainResult<T> = Result<T, DomainError>;

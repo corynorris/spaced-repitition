@@ -1,7 +1,6 @@
 use crate::application::graphql::{guards::RoleGuard, types::user::*};
+use crate::domain::auth::AuthUser;
 use crate::domain::{models::Role, services::UserService};
-use crate::errors::AppError;
-use crate::infrastructure::auth::AuthUser;
 use async_graphql::*;
 use std::sync::Arc;
 use uuid::Uuid;
@@ -18,7 +17,7 @@ impl UserMutation {
         input: CreateUserInput,
     ) -> GraphQLResult<AuthPayload> {
         let user_service = ctx.data::<Arc<UserService>>()?;
-        let (user, token) = user_service.register(input.into()).await.extend()?;
+        let (user, token) = user_service.register(input.into()).await?;
 
         Ok(AuthPayload {
             token,
