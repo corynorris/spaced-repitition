@@ -5,7 +5,7 @@ CREATE TABLE card_type (
     description TEXT,
     schema JSONB NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    updated_at TIMESTAMPTZ 
 );
 
 SELECT trigger_updated_at('card_type');
@@ -16,8 +16,9 @@ CREATE TABLE course (
     user_id UUID NOT NULL REFERENCES "user"(user_id) ON DELETE CASCADE,
     title TEXT COLLATE case_insensitive NOT NULL,
     description TEXT,
+    is_published BOOLEAN NOT NULL DEFAULT FALSE,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ,
     UNIQUE (user_id, title)
 );
 
@@ -30,7 +31,7 @@ CREATE TABLE lesson (
     title TEXT COLLATE case_insensitive NOT NULL,
     order_index INTEGER NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ,
     UNIQUE (course_id, title),
     UNIQUE (course_id, order_index)
 );
@@ -45,7 +46,7 @@ CREATE TABLE card (
     content JSONB NOT NULL,
     order_index INTEGER NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ,
     UNIQUE (lesson_id, order_index)
 );
 
@@ -64,16 +65,20 @@ SELECT
     c.title,
     c.user_id,
     c.description,
-    COUNT(DISTINCT l.lesson_id) as lesson_count,
-    COUNT(card.card_id) as total_cards,
+    c.is_published,
+    COALESCE(COUNT(DISTINCT l.lesson_id), 0) as lesson_count,  
+    COALESCE(COUNT(card.card_id), 0) as total_cards,           
     c.created_at,
-    MAX(c.updated_at) as last_updated
+    c.updated_at
 FROM course c
 LEFT JOIN lesson l ON c.course_id = l.course_id
 LEFT JOIN card ON l.lesson_id = card.lesson_id
-GROUP BY c.course_id, c.title, c.user_id, c.description, c.created_at;
+GROUP BY c.course_id, c.title, c.user_id, c.description, c.is_published, c.created_at;
 
+-- Recreate the indexes
 CREATE UNIQUE INDEX idx_course_summary_id ON course_summary(course_id);
+CREATE INDEX idx_course_summary_user_id ON course_summary(user_id);
+CREATE INDEX idx_course_summary_is_published ON course_summary(is_published);
 
 -- Create refresh trigger function
 CREATE OR REPLACE FUNCTION refresh_course_summary()

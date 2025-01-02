@@ -1,0 +1,45 @@
+use crate::application::graphql::guards::RoleGuard;
+use crate::domain::models::Role;
+use crate::{
+    application::graphql::types::user::UserObject, domain::services::UserService,
+    infrastructure::auth::AuthUser,
+};
+use async_graphql::*;
+use std::sync::Arc;
+use uuid::Uuid;
+pub struct UserQuery;
+
+#[Object]
+impl UserQuery {
+    /// Get the currently authenticated user
+    #[graphql(guard = "RoleGuard::new(Role::User)")]
+    async fn me(&self, ctx: &Context<'_>) -> Result<Option<UserObject>> {
+        let auth_user = ctx.data::<Option<AuthUser>>()?;
+        let user_service = ctx.data::<Arc<UserService>>()?;
+
+        match auth_user {
+            Some(auth_user) => {
+                let domain_user = user_service
+                    .get_user(Some(auth_user), auth_user.user_id)
+                    .await?;
+
+                Ok(Some(UserObject::from(domain_user)))
+            }
+            None => Ok(None),
+        }
+    }
+
+    /// Get a user by ID (requires authentication)
+    #[graphql(guard = "RoleGuard::new(Role::Admin)")]
+    async fn user(&self, ctx: &Context<'_>, id: ID) -> Result<UserObject> {
+        let auth_user = ctx.data::<Option<AuthUser>>()?;
+        let user_service = ctx.data::<Arc<UserService>>()?;
+
+        let user_id =
+            Uuid::parse_str(&id.to_string()).map_err(|_| Error::new("Invalid user ID format"))?;
+
+        let domain_user = user_service.get_user(auth_user.as_ref(), user_id).await?;
+
+        Ok(UserObject::from(domain_user))
+    }
+}

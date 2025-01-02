@@ -1,14 +1,22 @@
-/// Authentication related functionality
-pub mod auth;
+/// Application layer: GraphQL API and HTTP server implementation
+pub mod application {
+    pub mod container;
+    pub mod errors;
+    pub mod graphql;
+    pub mod http;
+}
 
-/// Configuration and environment setup
-pub mod config;
+/// Domain layer: Core business logic, models, policies, repositories, and services
+pub mod domain {
+    pub mod auth;
+    pub mod errors;
+    pub mod models;
+    pub mod policies;
+    pub mod repositories;
+    pub mod services;
+}
 
-/// Error handling
-pub mod error;
-
-/// GraphQL API implementation
-pub mod graphql;
-
-/// HTTP server and shared infrastructure
-pub mod http;
+/// Infrastructure layer: Authentication, configuration, and error handling
+pub mod infrastructure {
+    pub mod config;
+}
