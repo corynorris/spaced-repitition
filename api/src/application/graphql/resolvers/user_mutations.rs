@@ -39,7 +39,7 @@ impl UserMutation {
         })
     }
 
-    #[graphql(guard = "RoleGuard::new(Role::User)")]
+    #[graphql(guard = "RoleGuard::with_roles(vec![Role::User, Role::Admin])")]
     async fn update_profile(
         &self,
         ctx: &Context<'_>,

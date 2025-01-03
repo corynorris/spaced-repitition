@@ -13,7 +13,7 @@ pub struct UserQuery;
 #[Object]
 impl UserQuery {
     /// Get the currently authenticated user
-    #[graphql(guard = "RoleGuard::new(Role::User)")]
+    #[graphql(guard = "RoleGuard::with_roles(vec![Role::User, Role::Admin])")]
     async fn me(&self, ctx: &Context<'_>) -> ResolverResult<Option<UserObject>> {
         let auth_user: &AuthUser = ctx.data::<AuthUser>()?;
         let user_service = ctx.data::<Arc<UserService>>()?;
