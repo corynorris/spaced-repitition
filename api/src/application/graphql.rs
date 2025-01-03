@@ -1,5 +1,6 @@
 pub mod errors;
 pub mod guards;
+pub mod middleware;
 pub mod resolvers;
 pub mod scalars;
 pub mod schema;

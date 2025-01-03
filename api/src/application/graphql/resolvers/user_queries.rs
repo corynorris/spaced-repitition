@@ -1,5 +1,6 @@
 use crate::application::graphql::guards::RoleGuard;
 use crate::domain::auth::AuthUser;
+use crate::domain::errors::DomainError;
 use crate::domain::models::Role;
 use crate::{application::graphql::types::user::UserObject, domain::services::UserService};
 use async_graphql::*;

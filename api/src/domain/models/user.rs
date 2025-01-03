@@ -7,7 +7,7 @@ use uuid::Uuid;
 use crate::domain::errors::{DomainError, DomainResult};
 
 /// User roles
-#[derive(Debug, Clone, Copy, Serialize, Deserialize, sqlx::Type, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, sqlx::Type, PartialEq, Eq, Hash)]
 #[sqlx(type_name = "role", rename_all = "lowercase")]
 pub enum Role {
     User,

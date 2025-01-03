@@ -2,6 +2,31 @@ use crate::domain::errors::DomainError;
 use async_graphql::{Error as AsyncGraphlError, ErrorExtensions, Value as GraphQLValue};
 use std::{borrow::Cow, collections::HashMap};
 
+#[derive(Debug, Clone, Copy)]
+pub enum ErrorCode {
+    ValidationError,
+    Forbidden,
+    Unauthorized,
+    NotFound,
+    InternalError,
+    BusinessRuleViolation,
+    InvalidState,
+}
+
+impl ErrorCode {
+    pub fn as_str(&self) -> &'static str {
+        match self {
+            Self::ValidationError => "VALIDATION_ERROR",
+            Self::Forbidden => "FORBIDDEN",
+            Self::Unauthorized => "UNAUTHORIZED",
+            Self::NotFound => "NOT_FOUND",
+            Self::InternalError => "INTERNAL_ERROR",
+            Self::BusinessRuleViolation => "BUSINESS_RULE_VIOLATION",
+            Self::InvalidState => "INVALID_STATE",
+        }
+    }
+}
+
 #[derive(Clone)]
 pub struct GraphQLError(DomainError);
 
@@ -14,8 +39,8 @@ impl From<DomainError> for GraphQLError {
 impl From<GraphQLError> for AsyncGraphlError {
     fn from(wrapper: GraphQLError) -> Self {
         match wrapper.0 {
-            // Keep validation errors detailed since they help users fix their input
             DomainError::ValidationError { errors } => create_validation_error(errors),
+
             DomainError::UniqueConstraintViolation { field, value } => {
                 let mut errors = HashMap::new();
                 errors.insert(
@@ -25,50 +50,45 @@ impl From<GraphQLError> for AsyncGraphlError {
                 create_validation_error(errors)
             }
 
-            // For authorization errors, keep it simple but clear
             DomainError::InsufficientPermissions {
                 action: _,
                 resource: _,
             } => AsyncGraphlError::new("Not authorized to perform this action").extend_with(
                 |_, e| {
-                    e.set("code", "FORBIDDEN");
+                    e.set("code", ErrorCode::Forbidden.as_str());
                 },
             ),
 
-            // For not found errors, be generic to avoid information disclosure
             DomainError::EntityNotFound { entity, .. } => {
                 AsyncGraphlError::new(format!("{} not found", entity)).extend_with(|_, e| {
-                    e.set("code", "NOT_FOUND");
+                    e.set("code", ErrorCode::NotFound.as_str());
                 })
             }
 
             DomainError::InvalidCredentials => AsyncGraphlError::new("Invalid credentials")
                 .extend_with(|_, e| {
-                    e.set("code", "UNAUTHORIZED");
+                    e.set("code", ErrorCode::Unauthorized.as_str());
                 }),
 
-            // Hide database details from clients
             DomainError::Database(_) => AsyncGraphlError::new("An internal error occurred")
                 .extend_with(|_, e| {
-                    e.set("code", "INTERNAL_ERROR");
+                    e.set("code", ErrorCode::InternalError.as_str());
                 }),
 
-            // For business rule violations, keep the message but add a specific code
             DomainError::BusinessRuleViolation(message) => AsyncGraphlError::new(message)
                 .extend_with(|_, e| {
-                    e.set("code", "BUSINESS_RULE_VIOLATION");
+                    e.set("code", ErrorCode::BusinessRuleViolation.as_str());
                 }),
 
-            // Handle new error types with appropriate generic messages
             DomainError::InvalidStateTransition { .. } => {
                 AsyncGraphlError::new("Invalid operation for current state").extend_with(|_, e| {
-                    e.set("code", "INVALID_STATE");
+                    e.set("code", ErrorCode::InvalidState.as_str());
                 })
             }
 
             DomainError::CryptographyError(_) => {
                 AsyncGraphlError::new("An internal error occurred").extend_with(|_, e| {
-                    e.set("code", "INTERNAL_ERROR");
+                    e.set("code", ErrorCode::InternalError.as_str());
                 })
             }
         }
@@ -80,7 +100,7 @@ fn create_validation_error(
 ) -> AsyncGraphlError {
     let mut error = AsyncGraphlError::new("Validation error");
     error = error.extend_with(|_, e| {
-        e.set("code", "VALIDATION_ERROR");
+        e.set("code", ErrorCode::ValidationError.as_str());
         let mut validation_errors = Vec::new();
         for (field, reasons) in errors {
             for reason in reasons {
