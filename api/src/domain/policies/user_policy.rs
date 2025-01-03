@@ -36,7 +36,7 @@ impl UserPolicy {
     /// Rules:
     /// - Users can update their own profile
     /// - Admins can update any profile
-    pub fn can_update(&self, auth_user: &AuthUser, target_user_id: Uuid) -> bool {
+    pub fn can_update_user_profile(&self, auth_user: &AuthUser, target_user_id: Uuid) -> bool {
         auth_user.role.is_admin() || auth_user.user_id == target_user_id
     }
 

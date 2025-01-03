@@ -5,8 +5,8 @@ use crate::domain::{
     auth::PasswordManager,
     errors::{DomainError, DomainResult},
     models::user::{
-        AdminUserRoleUpdateData, AdminUserUpdateData, Role, User, UserChangePasswordData,
-        UserCreateData, UserProfileUpdateData,
+        AdminUserRoleUpdateData, Role, User, UserChangePasswordData, UserCreateData,
+        UserProfileUpdateData,
     },
 };
 pub struct UserRepository {
@@ -122,57 +122,6 @@ impl UserRepository {
         &self,
         user_id: Uuid,
         data: UserProfileUpdateData,
-    ) -> DomainResult<User> {
-        match sqlx::query_as!(
-            User,
-            r#"
-            UPDATE "user"
-            SET 
-                username = COALESCE($1, username),
-                email = COALESCE($2, email),
-                updated_at = NOW()
-            WHERE user_id = $3
-            RETURNING 
-                user_id,
-                username,
-                email,
-                role as "role: Role",
-                created_at,
-                updated_at
-            "#,
-            data.username,
-            data.email,
-            user_id
-        )
-        .fetch_one(&self.pool)
-        .await
-        {
-            Ok(user) => Ok(user),
-            Err(e) => {
-                if let Some(db_error) = e.as_database_error() {
-                    match db_error.constraint() {
-                        Some("user_username_key") => Err(DomainError::UniqueConstraintViolation {
-                            field: "username",
-                            value: data.username.unwrap_or_default(),
-                        }),
-                        Some("user_email_key") => Err(DomainError::UniqueConstraintViolation {
-                            field: "email",
-                            value: data.email.unwrap_or_default(),
-                        }),
-                        _ => Err(DomainError::Database(e.to_string())),
-                    }
-                } else {
-                    Err(DomainError::Database(e.to_string()))
-                }
-            }
-        }
-    }
-
-    /// Admin update of user profile
-    pub async fn admin_update_user(
-        &self,
-        user_id: Uuid,
-        data: AdminUserUpdateData,
     ) -> DomainResult<User> {
         match sqlx::query_as!(
             User,

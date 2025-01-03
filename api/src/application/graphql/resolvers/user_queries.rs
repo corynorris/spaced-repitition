@@ -26,6 +26,7 @@ impl UserQuery {
     }
 
     /// Get a user by ID (requires authentication)
+    /// TODO: tentatively leaving this here as I probalby want users and admins to see other users
     #[graphql(guard = "RoleGuard::new(Role::Admin)")]
     async fn user(&self, ctx: &Context<'_>, id: ID) -> ResolverResult<UserObject> {
         let auth_user: &AuthUser = ctx.data::<AuthUser>()?;

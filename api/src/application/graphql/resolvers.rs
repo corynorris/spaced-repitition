@@ -1,3 +1,5 @@
+mod admin_mutations;
+
 mod user_mutations;
 mod user_queries;
 

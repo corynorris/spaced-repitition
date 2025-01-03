@@ -7,7 +7,6 @@ use crate::domain::{
     errors::{DomainError, DomainResult},
     models::user::{
         AdminUserRoleUpdateData,
-        AdminUserUpdateData,
         Role,
         User,
         UserChangePasswordData,
@@ -101,30 +100,28 @@ impl UserService {
             });
         }
 
-        // Validate update data
         User::validate_profile_update(&data)?;
 
         self.repo.update_profile(auth_user.user_id, data).await
     }
 
     /// Admin update of another user's profile
-    pub async fn admin_update_user(
+    pub async fn update_user_profile(
         &self,
         auth_user: &AuthUser,
         user_id: Uuid,
-        data: AdminUserUpdateData,
+        data: UserProfileUpdateData,
     ) -> DomainResult<User> {
-        if !self.policy.can_update(auth_user, user_id) {
+        if !self.policy.can_update_user_profile(auth_user, user_id) {
             return Err(DomainError::InsufficientPermissions {
                 action: "update",
                 resource: "user",
             });
         }
 
-        // Validate update data
-        User::validate_admin_update(&data)?;
+        User::validate_profile_update(&data)?;
 
-        self.repo.admin_update_user(user_id, data).await
+        self.repo.update_profile(user_id, data).await
     }
 
     /// Change user's own password

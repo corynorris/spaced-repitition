@@ -59,13 +59,6 @@ pub struct AdminUserSearchFilters {
     pub email: Option<String>,
 }
 
-/// Input for admin updating a user's profile
-#[derive(Debug, Default)]
-pub struct AdminUserUpdateData {
-    pub username: Option<String>,
-    pub email: Option<String>,
-}
-
 /// Input for admin updating a user's role
 #[derive(Debug)]
 pub struct AdminUserRoleUpdateData {
@@ -153,32 +146,6 @@ impl User {
                 Cow::from("new_password"),
                 vec![Cow::from("Password must be at least 8 characters")],
             );
-        }
-
-        if errors.is_empty() {
-            Ok(())
-        } else {
-            Err(DomainError::ValidationError { errors })
-        }
-    }
-
-    /// Validate admin user update data
-    pub fn validate_admin_update(data: &AdminUserUpdateData) -> DomainResult<()> {
-        let mut errors = HashMap::new();
-
-        if let Some(username) = &data.username {
-            if username.len() < 3 {
-                errors.insert(
-                    Cow::from("username"),
-                    vec![Cow::from("Username must be at least 3 characters")],
-                );
-            }
-        }
-
-        if let Some(email) = &data.email {
-            if !Self::is_valid_email(email) {
-                errors.insert(Cow::from("email"), vec![Cow::from("Invalid email format")]);
-            }
         }
 
         if errors.is_empty() {

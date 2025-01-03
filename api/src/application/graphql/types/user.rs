@@ -1,7 +1,6 @@
 use crate::application::graphql::Timestamptz;
 use crate::domain::models::user::{
-    AdminUserRoleUpdateData, AdminUserUpdateData, User, UserChangePasswordData, UserCreateData,
-    UserProfileUpdateData,
+    AdminUserRoleUpdateData, User, UserChangePasswordData, UserCreateData, UserProfileUpdateData,
 };
 use crate::domain::models::Role;
 use async_graphql::*;
@@ -99,15 +98,6 @@ impl From<CreateUserInput> for UserCreateData {
 
 impl From<UpdateProfileInput> for UserProfileUpdateData {
     fn from(input: UpdateProfileInput) -> Self {
-        Self {
-            username: input.username,
-            email: input.email,
-        }
-    }
-}
-
-impl From<AdminUpdateUserInput> for AdminUserUpdateData {
-    fn from(input: AdminUpdateUserInput) -> Self {
         Self {
             username: input.username,
             email: input.email,
