@@ -1,4 +1,4 @@
-use super::{MutationRoot, QueryRoot};
+use super::resolvers::{MutationRoot, QueryRoot};
 use async_graphql::{EmptySubscription, Schema};
 
 pub type SpacedRepetitionSchema = Schema<QueryRoot, MutationRoot, EmptySubscription>;

@@ -13,9 +13,15 @@ impl RoleGuard {
 
 impl Guard for RoleGuard {
     async fn check(&self, ctx: &Context<'_>) -> Result<(), async_graphql::Error> {
-        match ctx.data_opt::<Option<AuthUser>>() {
-            Some(Some(auth_user)) if auth_user.role == self.required_role => Ok(()),
-            _ => Err(async_graphql::Error::new("Unauthorized")),
+        match ctx.data_opt::<AuthUser>() {
+            Some(auth_user) if auth_user.role == self.required_role => Ok(()),
+            Some(_) => Err(async_graphql::Error::new(format!(
+                "You must have the `{:?}` role to perform this action",
+                self.required_role
+            ))),
+            _ => Err(async_graphql::Error::new(
+                "You must be logged in to perform this action",
+            )),
         }
     }
 }

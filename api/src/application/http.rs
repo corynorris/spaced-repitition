@@ -52,8 +52,11 @@ async fn graphql_handler(
     request = request
         .data(ctx.auth_key.clone())
         .data(ctx.user_service.clone())
-        .data(ctx.course_service.clone())
-        .data(user); // Add user to context
+        .data(ctx.course_service.clone());
+
+    if let Some(user) = user {
+        request = request.data(user);
+    }
 
     schema.execute(request).await.into()
 }

@@ -1,6 +1,6 @@
 use std::{borrow::Cow, collections::HashMap};
 
-#[derive(thiserror::Error, Debug)]
+#[derive(thiserror::Error, Debug, Clone)]
 pub enum DomainError {
     #[error("invalid state transition: {from} -> {to}")]
     InvalidStateTransition { from: String, to: String },

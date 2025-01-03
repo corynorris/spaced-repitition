@@ -1,7 +1,6 @@
 use std::sync::Arc;
 
 use sqlx::PgPool;
-use tower::Service;
 
 use crate::{
     config::Config,
