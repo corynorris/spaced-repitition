@@ -1,6 +1,6 @@
 use crate::application::graphql::guards::RoleGuard;
 use crate::application::graphql::types::{
-    AuthPayload, CreateUserInput, LoginInput, RoleEnum, UpdateProfileInput,
+    AuthPayload, CreateUserInput, LoginInput, UpdateProfileInput,
 };
 use crate::domain::auth::AuthUser;
 use crate::domain::models::Role;
