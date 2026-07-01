@@ -1,0 +1,10 @@
+.git
+.svelte-kit
+build
+node_modules
+test-results
+playwright-report
+coverage
+legacy/api/target
+legacy/web/node_modules
+legacy/web/dist

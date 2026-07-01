@@ -1,0 +1,6 @@
+packages:
+  - "."
+  - "!legacy/**"
+
+allowBuilds:
+  esbuild: true

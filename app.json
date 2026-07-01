@@ -1,4 +1,4 @@
 {
-  "name": "spaced-repetition-api",
-  "description": "Spaced repetition API server"
+  "name": "spaced-repetition",
+  "description": "SvelteKit spaced repetition vocabulary app"
 }
