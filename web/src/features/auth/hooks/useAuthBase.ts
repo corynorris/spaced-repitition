@@ -33,7 +33,11 @@ const GRAPHQL_URL = "/api/graphql";
 /**
  * Executes a GraphQL request, returning data or throwing on GraphQL/server errors.
  */
-async function graphqlRequest<T>(query: string, variables?: Record<string, unknown>, token?: string): Promise<T> {
+async function graphqlRequest<T>(
+  query: string,
+  variables?: Record<string, unknown>,
+  token?: string,
+): Promise<T> {
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
   };
