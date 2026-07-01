@@ -3,7 +3,7 @@ set -e
 
 # Copy environment file if it doesn't exist
 if [ ! -f .env ]; then
-    cp .env.example .env
+    cp .env.sample .env
     echo "Created .env file from template. Please review and update the values."
 fi
 
