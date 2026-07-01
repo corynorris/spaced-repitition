@@ -27,19 +27,15 @@ export const reviewRating = pgEnum("review_rating", [
   "easy"
 ]);
 
-export const users = pgTable("user", {
-  id: uuid("id").defaultRandom().primaryKey(),
-  email: text("email").notNull().unique(),
-  name: text("name"),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow()
-});
+// Better Auth owns the "user" table (id is text, not uuid).
+// We reference it by raw column — no Drizzle foreign key — because the
+// table is managed by Better Auth's own migration path.
 
 export const courses = pgTable(
   "course",
   {
     id: uuid("id").defaultRandom().primaryKey(),
-    ownerId: uuid("owner_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+    ownerId: text("owner_id").notNull(),
     title: text("title").notNull(),
     description: text("description"),
     sourceLanguage: text("source_language"),

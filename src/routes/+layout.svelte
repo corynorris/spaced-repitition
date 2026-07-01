@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { enhance } from "$app/forms";
   import { base } from "$app/paths";
   import "../styles.css";
 
@@ -19,6 +20,9 @@
     <nav>
       {#if data.user}
         <a href="{base}/app">Dashboard</a>
+        <form method="POST" action="{base}/signout" use:enhance style="display:inline">
+          <button class="link-button" type="submit">Sign out</button>
+        </form>
       {:else}
         <a href="{base}/login">Sign in</a>
         <a href="{base}/register">Create account</a>
