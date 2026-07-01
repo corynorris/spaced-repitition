@@ -28,7 +28,7 @@ interface GraphQLResponse<T> {
   errors?: Array<{ message: string }>;
 }
 
-const GRAPHQL_URL = "/api/graphql";
+const GRAPHQL_URL = `${import.meta.env.BASE_URL}api/graphql`;
 
 /**
  * Executes a GraphQL request, returning data or throwing on GraphQL/server errors.

@@ -7,6 +7,7 @@ export default defineConfig(({ mode }) => {
   const apiUrl = env.VITE_API_URL;
 
   return {
+    base: process.env.VITE_BASE || env.VITE_BASE || "/",
     plugins: [react()],
     resolve: {
       alias: {
