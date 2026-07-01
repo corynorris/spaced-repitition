@@ -1,0 +1,72 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        SELECT \n            course_id as \"course_id!: Uuid\",\n            title as \"title!\",\n            user_id as \"user_id!: Uuid\",\n            description,\n            is_published as \"is_published!\",\n            lesson_count,\n            total_cards,\n            created_at as \"created_at!\",\n            updated_at\n        FROM course_summary\n        WHERE is_published = true\n            AND (\n                LOWER(title) LIKE $1 \n                OR LOWER(description) LIKE $1\n            )\n        ORDER BY created_at DESC\n        LIMIT $2 OFFSET $3\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "course_id!: Uuid",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "title!",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 2,
+        "name": "user_id!: Uuid",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 3,
+        "name": "description",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 4,
+        "name": "is_published!",
+        "type_info": "Bool"
+      },
+      {
+        "ordinal": 5,
+        "name": "lesson_count",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 6,
+        "name": "total_cards",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 7,
+        "name": "created_at!",
+        "type_info": "Timestamptz"
+      },
+      {
+        "ordinal": 8,
+        "name": "updated_at",
+        "type_info": "Timestamptz"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Int8",
+        "Int8"
+      ]
+    },
+    "nullable": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  "hash": "6afaf946ab18cd9346afb6577d6bb8539cc2890ae63770169ad55e32c4ba5db1"
+}
