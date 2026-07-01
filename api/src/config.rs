@@ -15,7 +15,7 @@ pub struct Config {
     pub hmac_key: String,
 
     /// The port this server will listen on.
-    #[arg(long, env = "PORT", default_value = "8080")]
+    #[arg(long, env = "PORT", default_value = "5000")]
     pub port: u16,
 
     /// The host address to bind to.
