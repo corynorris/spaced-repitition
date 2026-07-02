@@ -448,9 +448,9 @@
 
 <style>
 	.page {
-		max-width: 600px;
+		max-width: 880px;
 		margin: 0 auto;
-		padding: 2rem 1rem;
+		padding: clamp(1.5rem, 4vw, 3rem) 1rem;
 	}
 
 	.back {
@@ -493,7 +493,7 @@
 
 	.button.primary {
 		background: var(--c-accent, #6366f1);
-		color: white;
+		color: var(--accent-text);
 	}
 
 	.button.primary:hover {
@@ -515,7 +515,7 @@
 	/* ── Shared card base ── */
 	.card {
 		width: 100%;
-		max-width: 480px;
+		max-width: 640px;
 		min-height: 220px;
 	}
 
@@ -523,8 +523,8 @@
 	.card-back {
 		padding: 2rem;
 		border: 1px solid var(--c-border, #e0e0e0);
-		border-radius: 16px;
-		background: var(--c-bg, white);
+		border-radius: 8px;
+		background: rgba(59, 66, 82, 0.86);
 		box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 		display: flex;
 		flex-direction: column;
@@ -550,7 +550,7 @@
 	}
 
 	.prompt {
-		font-size: 2rem;
+		font-size: clamp(1.7rem, 5vw, 2.75rem);
 		font-weight: 700;
 		text-align: center;
 		margin: 0;
@@ -604,7 +604,7 @@
 		grid-template-columns: repeat(4, 1fr);
 		gap: 0.5rem;
 		width: 100%;
-		max-width: 480px;
+		max-width: 640px;
 	}
 
 	.rating {
@@ -619,7 +619,7 @@
 		font-family: inherit;
 		font-weight: 600;
 		font-size: 0.85rem;
-		color: white;
+		color: var(--bg);
 		transition: opacity 0.15s;
 	}
 
@@ -655,15 +655,15 @@
 	.card.auto-graded {
 		padding: 2rem;
 		border: 1px solid var(--c-border, #e0e0e0);
-		border-radius: 16px;
-		background: var(--c-bg, white);
+		border-radius: 8px;
+		background: rgba(59, 66, 82, 0.86);
 		box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		gap: 1rem;
 		min-height: 220px;
-		max-width: 480px;
+		max-width: 640px;
 		width: 100%;
 	}
 
@@ -716,7 +716,7 @@
 
 	.block.selected {
 		background: var(--c-accent, #6366f1);
-		color: white;
+		color: var(--accent-text);
 		border-color: var(--c-accent, #6366f1);
 	}
 
@@ -729,7 +729,7 @@
 		border: none;
 		border-radius: 8px;
 		background: var(--c-accent, #6366f1);
-		color: white;
+		color: var(--accent-text);
 		font-weight: 600;
 		font-size: 0.95rem;
 		font-family: inherit;
@@ -801,13 +801,13 @@
 	}
 
 	.feedback.correct {
-		background: #ecfdf5;
-		color: #059669;
+		background: rgba(163, 190, 140, 0.18);
+		color: var(--success);
 	}
 
 	.feedback.incorrect {
-		background: #fef2f2;
-		color: #dc2626;
+		background: rgba(191, 97, 106, 0.18);
+		color: var(--danger);
 	}
 
 	.result-icon {
@@ -840,5 +840,23 @@
 		color: var(--c-text-sub, #888);
 		margin: 0;
 		text-align: center;
+	}
+
+	@media (max-width: 640px) {
+		.ratings {
+			grid-template-columns: repeat(2, 1fr);
+		}
+
+		.card-front,
+		.card-back,
+		.card.auto-graded {
+			padding: 1.25rem;
+		}
+
+		.submit-btn,
+		.reveal-btn,
+		.button.primary {
+			width: 100%;
+		}
 	}
 </style>

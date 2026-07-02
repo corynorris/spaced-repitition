@@ -131,9 +131,9 @@ const isJapanese = $derived(data.course.languageProfile === "japanese");
 
 <style>
   .page {
-    max-width: 560px;
+    max-width: 820px;
     margin: 0 auto;
-    padding: 2rem 1rem;
+    padding: clamp(1.5rem, 4vw, 3rem) 1rem;
   }
 
   .back {
@@ -148,13 +148,17 @@ const isJapanese = $derived(data.course.languageProfile === "japanese");
 
   h1 {
     margin: 0.5rem 0 1.5rem;
-    font-size: 1.5rem;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1;
   }
 
   .form {
-    display: flex;
-    flex-direction: column;
+    background: rgba(59, 66, 82, 0.78);
+    border: 1px solid var(--c-border);
+    border-radius: 8px;
+    display: grid;
     gap: 1rem;
+    padding: 1rem;
   }
 
   label {
@@ -173,24 +177,6 @@ const isJapanese = $derived(data.course.languageProfile === "japanese");
     font-weight: 400;
     color: var(--c-text-sub, #888);
     font-size: 0.8rem;
-  }
-
-  input,
-  textarea {
-    padding: 0.6rem 0.75rem;
-    border: 1px solid var(--c-border, #ccc);
-    border-radius: 8px;
-    font-size: 0.95rem;
-    font-family: inherit;
-    background: var(--c-bg, white);
-    color: var(--c-text, #333);
-  }
-
-  input:focus,
-  textarea:focus {
-    outline: none;
-    border-color: var(--c-accent, #6366f1);
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
   }
 
   .row {
@@ -222,7 +208,7 @@ const isJapanese = $derived(data.course.languageProfile === "japanese");
 
   .button.primary {
     background: var(--c-accent, #6366f1);
-    color: white;
+    color: var(--accent-text);
   }
 
   .button.primary:hover {

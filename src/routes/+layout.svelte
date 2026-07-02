@@ -16,7 +16,7 @@ let { children, data } = $props();
 
 <div class="app-shell">
   <header class="topbar">
-    <a class="brand" href="{base}/">Spaced Repetition</a>
+    <a class="brand" href={data.user ? `${base}/app` : `${base}/`}>Spaced Repetition</a>
     <nav>
       {#if data.user}
         <a href="{base}/app">Dashboard</a>

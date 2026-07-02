@@ -34,6 +34,8 @@
 	--text-muted: var(--nord9);
 	--accent: var(--nord8);
 	--accent-hover: var(--nord7);
+	--accent-strong: var(--nord10);
+	--accent-text: var(--nord0);
 	--danger: var(--nord11);
 	--warning: var(--nord13);
 	--success: var(--nord14);
@@ -42,11 +44,14 @@
 
 	/* Legacy aliases used by page-level CSS */
 	--c-accent: var(--nord8);
+	--c-accent-strong: var(--nord10);
 	--c-text: var(--nord6);
 	--c-text-sub: var(--nord4);
 	--c-bg: var(--nord0);
 	--c-bg-sub: var(--nord1);
 	--c-border: var(--nord3);
+	--c-danger-bg: rgba(191, 97, 106, 0.15);
+	--c-danger-sub: rgba(191, 97, 106, 0.5);
 
 	color: var(--text);
 	background: var(--bg);
@@ -61,6 +66,10 @@
 
 body {
 	margin: 0;
+	background:
+		radial-gradient(circle at top left, rgba(136, 192, 208, 0.16), transparent 32rem),
+		linear-gradient(180deg, var(--nord0), #242933 55%, var(--nord0));
+	min-width: 320px;
 }
 
 a {
@@ -75,11 +84,15 @@ a {
 /* ── Topbar ──────────────────────────────────── */
 .topbar {
 	align-items: center;
-	background: var(--bg-elevated);
+	background: rgba(59, 66, 82, 0.92);
 	border-bottom: 1px solid var(--border);
 	display: flex;
 	justify-content: space-between;
 	padding: 1rem clamp(1rem, 4vw, 2rem);
+	position: sticky;
+	top: 0;
+	z-index: 10;
+	backdrop-filter: blur(14px);
 }
 
 .brand {
@@ -92,6 +105,8 @@ a {
 	gap: 1rem;
 	font-size: 0.95rem;
 	align-items: center;
+	flex-wrap: wrap;
+	justify-content: flex-end;
 }
 
 /* ── Shared page layout ──────────────────────── */
@@ -99,7 +114,7 @@ a {
 .page,
 .auth-page {
 	margin: 0 auto;
-	max-width: 960px;
+	max-width: 1120px;
 	padding: clamp(2rem, 6vw, 5rem) 1rem;
 }
 
@@ -177,7 +192,7 @@ a {
 .button.primary {
 	background: var(--accent);
 	border-color: var(--accent);
-	color: var(--bg);
+	color: var(--accent-text);
 	font-weight: 700;
 }
 
@@ -245,7 +260,8 @@ label span em {
 }
 
 input,
-textarea {
+textarea,
+select {
 	border: 1px solid var(--border);
 	border-radius: 0.5rem;
 	font: inherit;
@@ -256,10 +272,26 @@ textarea {
 }
 
 input:focus,
-textarea:focus {
+textarea:focus,
+select:focus {
 	outline: none;
 	border-color: var(--accent);
 	box-shadow: 0 0 0 3px rgba(136, 192, 208, 0.2);
+}
+
+select {
+	appearance: none;
+	background-image:
+		linear-gradient(45deg, transparent 50%, var(--text-sub) 50%),
+		linear-gradient(135deg, var(--text-sub) 50%, transparent 50%);
+	background-position:
+		calc(100% - 18px) 1.15rem,
+		calc(100% - 12px) 1.15rem;
+	background-size:
+		6px 6px,
+		6px 6px;
+	background-repeat: no-repeat;
+	padding-right: 2.25rem;
 }
 
 .error {
@@ -301,4 +333,27 @@ textarea:focus {
 	border-top: 1px solid var(--border);
 	content: "";
 	flex: 1;
+}
+
+@media (max-width: 640px) {
+	.topbar {
+		align-items: flex-start;
+		gap: 0.75rem;
+		padding: 0.85rem 1rem;
+	}
+
+	.topbar nav {
+		gap: 0.7rem;
+		font-size: 0.9rem;
+	}
+
+	.actions,
+	.page-header {
+		align-items: stretch;
+		flex-direction: column;
+	}
+
+	.button {
+		width: 100%;
+	}
 }
