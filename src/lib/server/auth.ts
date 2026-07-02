@@ -4,6 +4,7 @@ import { genericOAuth } from "better-auth/plugins";
 import { sveltekitCookies } from "better-auth/svelte-kit";
 import { getRequestEvent } from "$app/server";
 import { db } from "$lib/server/db/client";
+import * as schema from "$lib/server/db/schema";
 
 const issuer = process.env.ZITADEL_ISSUER?.replace(/\/+$/, "");
 const zitadelEnabled = Boolean(
@@ -18,7 +19,8 @@ export const auth = betterAuth({
   basePath: "/api/auth",
   secret: process.env.BETTER_AUTH_SECRET ?? "dev-secret-change-me-minimum-32-chars",
   database: drizzleAdapter(db, {
-    provider: "pg"
+    provider: "pg",
+    schema,
   }),
   emailAndPassword: {
     enabled: true
