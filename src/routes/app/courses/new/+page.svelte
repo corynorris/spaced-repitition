@@ -1,8 +1,51 @@
 <script lang="ts">
-  import { enhance } from "$app/forms";
-  import { base } from "$app/paths";
+import { enhance } from "$app/forms";
+import { base } from "$app/paths";
 
-  let { form } = $props();
+let { form } = $props();
+const f = $derived(form as any);
+
+let languageProfile = $state("generic");
+let targetLanguage = $state("");
+let sourceLanguage = $state("English");
+let aiTopic = $state("");
+let aiLoading = $state(false);
+let aiError = $state("");
+let aiPreview = $state<any>(null);
+
+$effect(() => {
+	if (languageProfile === "japanese" && !targetLanguage) {
+		targetLanguage = "Japanese";
+	}
+});
+
+async function generateAiCourse() {
+	aiLoading = true;
+	aiError = "";
+	aiPreview = null;
+
+	try {
+		const response = await fetch(`${base}/api/ai/generate-course`, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({
+				topic: aiTopic,
+				sourceLanguage: sourceLanguage || "English",
+				targetLanguage:
+					targetLanguage ||
+					(languageProfile === "japanese" ? "Japanese" : "Target language"),
+				languageProfile,
+			}),
+		});
+		const body = await response.json();
+		if (!response.ok) throw new Error(body.error ?? "Generation failed");
+		aiPreview = body.preview;
+	} catch (err) {
+		aiError = err instanceof Error ? err.message : "Generation failed";
+	} finally {
+		aiLoading = false;
+	}
+}
 </script>
 
 <main class="page">
@@ -10,6 +53,14 @@
   <h1>New course</h1>
 
   <form method="POST" use:enhance class="form">
+    <label>
+      <span>Language profile</span>
+      <select name="languageProfile" bind:value={languageProfile}>
+        <option value="generic">Generic</option>
+        <option value="japanese">Japanese</option>
+      </select>
+    </label>
+
     <label>
       <span>Title</span>
       <input
@@ -37,30 +88,67 @@
 
     <div class="row">
       <label>
-        <span>Source language <em>(optional)</em></span>
+        <span>Source language <em>(learner/base)</em></span>
         <input
           type="text"
           name="sourceLanguage"
           maxlength="80"
-          placeholder="e.g. Japanese"
-          value={(form as any)?.values?.sourceLanguage ?? ""}
+          placeholder="e.g. English"
+          bind:value={sourceLanguage}
         />
       </label>
 
       <label>
-        <span>Target language <em>(optional)</em></span>
+        <span>Target language <em>(being studied)</em></span>
         <input
           type="text"
           name="targetLanguage"
           maxlength="80"
-          placeholder="e.g. English"
-          value={(form as any)?.values?.targetLanguage ?? ""}
+          placeholder="e.g. Japanese"
+          bind:value={targetLanguage}
         />
       </label>
     </div>
 
     <button type="submit" class="button primary">Create course</button>
   </form>
+
+  <section class="ai-panel">
+    <h2>Generate with AI</h2>
+    <label>
+      <span>Course topic</span>
+      <textarea
+        rows="3"
+        maxlength="300"
+        bind:value={aiTopic}
+        placeholder="e.g. beginner Japanese for ordering at restaurants"
+      ></textarea>
+    </label>
+    <button class="button" type="button" disabled={aiLoading || !aiTopic} onclick={generateAiCourse}>
+      {aiLoading ? "Generating..." : "Generate preview"}
+    </button>
+    {#if aiError || f?.aiError}
+      <p class="error">{aiError || f.aiError}</p>
+    {/if}
+
+    {#if aiPreview}
+      <div class="preview">
+        <h3>{aiPreview.title}</h3>
+        {#if aiPreview.description}
+          <p>{aiPreview.description}</p>
+        {/if}
+        <ul>
+          {#each aiPreview.lessons as lesson}
+            <li>{lesson.title} ({lesson.type})</li>
+          {/each}
+        </ul>
+        <form method="POST" action="?/createAiCourse" use:enhance>
+          <input type="hidden" name="preview" value={JSON.stringify(aiPreview)} />
+          <button class="button primary" type="submit">Create this course</button>
+        </form>
+      </div>
+    {/if}
+  </section>
 </main>
 
 <style>
@@ -110,7 +198,8 @@
   }
 
   input,
-  textarea {
+  textarea,
+  select {
     padding: 0.6rem 0.75rem;
     border: 1px solid var(--c-border, #ccc);
     border-radius: 8px;
@@ -121,7 +210,8 @@
   }
 
   input:focus,
-  textarea:focus {
+  textarea:focus,
+  select:focus {
     outline: none;
     border-color: var(--c-accent, #6366f1);
     box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
@@ -155,5 +245,28 @@
 
   .button.primary:hover {
     opacity: 0.9;
+  }
+
+  .ai-panel {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--c-border, #e0e0e0);
+    display: grid;
+    gap: 1rem;
+  }
+
+  .ai-panel h2 {
+    margin: 0;
+    font-size: 1.15rem;
+  }
+
+  .preview {
+    border: 1px solid var(--c-border, #e0e0e0);
+    border-radius: 8px;
+    padding: 1rem;
+  }
+
+  .preview h3 {
+    margin: 0 0 0.5rem;
   }
 </style>

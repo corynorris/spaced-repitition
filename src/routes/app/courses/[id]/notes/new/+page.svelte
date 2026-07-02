@@ -1,9 +1,10 @@
 <script lang="ts">
-  import { enhance } from "$app/forms";
-  import { base } from "$app/paths";
+import { enhance } from "$app/forms";
+import { base } from "$app/paths";
 
-  let { data, form } = $props();
-  const f = $derived(form as any);
+let { data, form } = $props();
+const f = $derived(form as any);
+const isJapanese = $derived(data.course.languageProfile === "japanese");
 </script>
 
 <main class="page">
@@ -15,7 +16,7 @@
   <form method="POST" use:enhance class="form">
     <div class="row">
       <label>
-        <span>Term *</span>
+        <span>{isJapanese ? "Kanji/Kana term" : "Term"} *</span>
         <input
           type="text"
           name="term"
@@ -30,7 +31,7 @@
       </label>
 
       <label>
-        <span>Reading <em>(optional)</em></span>
+        <span>{isJapanese ? "Hiragana reading" : "Reading"} <em>(optional)</em></span>
         <input
           type="text"
           name="reading"
@@ -41,8 +42,21 @@
       </label>
     </div>
 
+    {#if isJapanese}
+      <label>
+        <span>Furigana <em>(optional bracket markup)</em></span>
+        <input
+          type="text"
+          name="furigana"
+          maxlength="1000"
+          placeholder="e.g. 食[た]べる or 日本語[にほんご]"
+          value={f?.values?.furigana ?? ""}
+        />
+      </label>
+    {/if}
+
     <label>
-      <span>Definition *</span>
+      <span>{isJapanese ? "English" : "Definition"} *</span>
       <textarea
         name="definition"
         required

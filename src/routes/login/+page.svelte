@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { enhance } from "$app/forms";
-  import { base } from "$app/paths";
-  import { authClient } from "$lib/client/auth";
+import { enhance } from "$app/forms";
+import { base } from "$app/paths";
+import { authClient } from "$lib/client/auth";
 
-  let { data, form } = $props();
+let { data, form } = $props();
 
-  function signInWithZitadel() {
-    authClient.signIn.oauth2({ providerId: "zitadel" });
-  }
+function signInWithZitadel() {
+	authClient.signIn.oauth2({ providerId: "zitadel" });
+}
 </script>
 
 <main class="auth-page">

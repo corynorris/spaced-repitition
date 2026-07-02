@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { enhance } from "$app/forms";
-  import { base } from "$app/paths";
-  import "../styles.css";
+import { enhance } from "$app/forms";
+import { base } from "$app/paths";
+import "../styles.css";
 
-  let { children, data } = $props();
+let { children, data } = $props();
 </script>
 
 <svelte:head>

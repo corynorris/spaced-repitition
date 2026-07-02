@@ -1,20 +1,27 @@
 {
-  "version": "7",
-  "dialect": "postgresql",
-  "entries": [
-    {
-      "idx": 0,
-      "version": "7",
-      "when": 1782942384446,
-      "tag": "0000_nasty_mister_sinister",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1782954166773,
-      "tag": "0001_redundant_snowbird",
-      "breakpoints": true
-    }
-  ]
+	"version": "7",
+	"dialect": "postgresql",
+	"entries": [
+		{
+			"idx": 0,
+			"version": "7",
+			"when": 1782942384446,
+			"tag": "0000_nasty_mister_sinister",
+			"breakpoints": true
+		},
+		{
+			"idx": 1,
+			"version": "7",
+			"when": 1782954166773,
+			"tag": "0001_redundant_snowbird",
+			"breakpoints": true
+		},
+		{
+			"idx": 2,
+			"version": "7",
+			"when": 1783022400000,
+			"tag": "0002_ai_language_profiles",
+			"breakpoints": true
+		}
+	]
 }

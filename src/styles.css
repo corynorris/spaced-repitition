@@ -1,301 +1,304 @@
 /* Nord theme — https://www.nordtheme.com */
 :root {
-  /* Polar Night (backgrounds) */
-  --nord0: #2E3440;
-  --nord1: #3B4252;
-  --nord2: #434C5E;
-  --nord3: #4C566A;
+	/* Polar Night (backgrounds) */
+	--nord0: #2e3440;
+	--nord1: #3b4252;
+	--nord2: #434c5e;
+	--nord3: #4c566a;
 
-  /* Snow Storm (foreground / text) */
-  --nord4: #D8DEE9;
-  --nord5: #E5E9F0;
-  --nord6: #ECEFF4;
+	/* Snow Storm (foreground / text) */
+	--nord4: #d8dee9;
+	--nord5: #e5e9f0;
+	--nord6: #eceff4;
 
-  /* Frost (cool accents) */
-  --nord7: #8FBCBB;
-  --nord8: #88C0D0;
-  --nord9: #81A1C1;
-  --nord10: #5E81AC;
+	/* Frost (cool accents) */
+	--nord7: #8fbcbb;
+	--nord8: #88c0d0;
+	--nord9: #81a1c1;
+	--nord10: #5e81ac;
 
-  /* Aurora (pops of color) */
-  --nord11: #BF616A;
-  --nord12: #D08770;
-  --nord13: #EBCB8B;
-  --nord14: #A3BE8C;
-  --nord15: #B48EAD;
+	/* Aurora (pops of color) */
+	--nord11: #bf616a;
+	--nord12: #d08770;
+	--nord13: #ebcb8b;
+	--nord14: #a3be8c;
+	--nord15: #b48ead;
 
-  /* Semantic aliases */
-  --bg: var(--nord0);
-  --bg-elevated: var(--nord1);
-  --bg-hover: var(--nord2);
-  --border: var(--nord3);
-  --text: var(--nord6);
-  --text-sub: var(--nord4);
-  --text-muted: var(--nord9);
-  --accent: var(--nord8);
-  --accent-hover: var(--nord7);
-  --danger: var(--nord11);
-  --warning: var(--nord13);
-  --success: var(--nord14);
-  --info: var(--nord10);
-  --purple: var(--nord15);
+	/* Semantic aliases */
+	--bg: var(--nord0);
+	--bg-elevated: var(--nord1);
+	--bg-hover: var(--nord2);
+	--border: var(--nord3);
+	--text: var(--nord6);
+	--text-sub: var(--nord4);
+	--text-muted: var(--nord9);
+	--accent: var(--nord8);
+	--accent-hover: var(--nord7);
+	--danger: var(--nord11);
+	--warning: var(--nord13);
+	--success: var(--nord14);
+	--info: var(--nord10);
+	--purple: var(--nord15);
 
-  /* Legacy aliases used by page-level CSS */
-  --c-accent: var(--nord8);
-  --c-text: var(--nord6);
-  --c-text-sub: var(--nord4);
-  --c-bg: var(--nord0);
-  --c-bg-sub: var(--nord1);
-  --c-border: var(--nord3);
+	/* Legacy aliases used by page-level CSS */
+	--c-accent: var(--nord8);
+	--c-text: var(--nord6);
+	--c-text-sub: var(--nord4);
+	--c-bg: var(--nord0);
+	--c-bg-sub: var(--nord1);
+	--c-border: var(--nord3);
 
-  color: var(--text);
-  background: var(--bg);
-  font-family:
-    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+	color: var(--text);
+	background: var(--bg);
+	font-family:
+		Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+		"Segoe UI", sans-serif;
 }
 
 * {
-  box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 body {
-  margin: 0;
+	margin: 0;
 }
 
 a {
-  color: inherit;
-  text-decoration: none;
+	color: inherit;
+	text-decoration: none;
 }
 
 .app-shell {
-  min-height: 100vh;
+	min-height: 100vh;
 }
 
 /* ── Topbar ──────────────────────────────────── */
 .topbar {
-  align-items: center;
-  background: var(--bg-elevated);
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  padding: 1rem clamp(1rem, 4vw, 2rem);
+	align-items: center;
+	background: var(--bg-elevated);
+	border-bottom: 1px solid var(--border);
+	display: flex;
+	justify-content: space-between;
+	padding: 1rem clamp(1rem, 4vw, 2rem);
 }
 
 .brand {
-  font-weight: 700;
-  color: var(--accent);
+	font-weight: 700;
+	color: var(--accent);
 }
 
 .topbar nav {
-  display: flex;
-  gap: 1rem;
-  font-size: 0.95rem;
-  align-items: center;
+	display: flex;
+	gap: 1rem;
+	font-size: 0.95rem;
+	align-items: center;
 }
 
 /* ── Shared page layout ──────────────────────── */
 .hero,
 .page,
 .auth-page {
-  margin: 0 auto;
-  max-width: 960px;
-  padding: clamp(2rem, 6vw, 5rem) 1rem;
+	margin: 0 auto;
+	max-width: 960px;
+	padding: clamp(2rem, 6vw, 5rem) 1rem;
 }
 
 .hero {
-  align-items: center;
-  display: grid;
-  min-height: calc(100vh - 65px);
+	align-items: center;
+	display: grid;
+	min-height: calc(100vh - 65px);
 }
 
 .hero h1,
 .page-header h1,
 .auth-card h1 {
-  font-size: clamp(2rem, 7vw, 4.25rem);
-  letter-spacing: 0;
-  line-height: 1;
-  margin: 0;
-  color: var(--text);
+	font-size: clamp(2rem, 7vw, 4.25rem);
+	letter-spacing: 0;
+	line-height: 1;
+	margin: 0;
+	color: var(--text);
 }
 
 .page-header h1,
 .auth-card h1 {
-  font-size: clamp(2rem, 4vw, 3rem);
+	font-size: clamp(2rem, 4vw, 3rem);
 }
 
 .eyebrow {
-  color: var(--accent);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  margin: 0 0 0.75rem;
-  text-transform: uppercase;
+	color: var(--accent);
+	font-size: 0.78rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	margin: 0 0 0.75rem;
+	text-transform: uppercase;
 }
 
 .lede {
-  color: var(--text-sub);
-  font-size: 1.15rem;
-  line-height: 1.6;
-  max-width: 680px;
+	color: var(--text-sub);
+	font-size: 1.15rem;
+	line-height: 1.6;
+	max-width: 680px;
 }
 
 .actions,
 .page-header {
-  align-items: center;
-  display: flex;
-  gap: 1rem;
+	align-items: center;
+	display: flex;
+	gap: 1rem;
 }
 
 .page-header {
-  justify-content: space-between;
+	justify-content: space-between;
 }
 
 /* ── Buttons ─────────────────────────────────── */
 .button {
-  align-items: center;
-  border: 1px solid var(--border);
-  border-radius: 0.5rem;
-  display: inline-flex;
-  font-weight: 700;
-  justify-content: center;
-  min-height: 2.75rem;
-  padding: 0.65rem 1rem;
-  background: var(--bg-elevated);
-  color: var(--text);
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background 0.15s, border-color 0.15s;
+	align-items: center;
+	border: 1px solid var(--border);
+	border-radius: 0.5rem;
+	display: inline-flex;
+	font-weight: 700;
+	justify-content: center;
+	min-height: 2.75rem;
+	padding: 0.65rem 1rem;
+	background: var(--bg-elevated);
+	color: var(--text);
+	cursor: pointer;
+	font-size: 0.9rem;
+	transition:
+		background 0.15s,
+		border-color 0.15s;
 }
 
 .button:hover {
-  background: var(--bg-hover);
+	background: var(--bg-hover);
 }
 
 .button.primary {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--bg);
-  font-weight: 700;
+	background: var(--accent);
+	border-color: var(--accent);
+	color: var(--bg);
+	font-weight: 700;
 }
 
 .button.primary:hover {
-  background: var(--accent-hover);
-  border-color: var(--accent-hover);
-  opacity: 1;
+	background: var(--accent-hover);
+	border-color: var(--accent-hover);
+	opacity: 1;
 }
 
 /* ── Cards / Empty states ────────────────────── */
 .empty-state,
 .auth-card {
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  border-radius: 0.5rem;
-  margin-top: 2rem;
-  padding: 1.5rem;
+	background: var(--bg-elevated);
+	border: 1px solid var(--border);
+	border-radius: 0.5rem;
+	margin-top: 2rem;
+	padding: 1.5rem;
 }
 
 .empty-state p,
 .fine-print {
-  color: var(--text-sub);
-  line-height: 1.6;
+	color: var(--text-sub);
+	line-height: 1.6;
 }
 
 .empty-state h2 {
-  color: var(--text);
-  margin-top: 0;
+	color: var(--text);
+	margin-top: 0;
 }
 
 /* ── Auth pages ──────────────────────────────── */
 .auth-page {
-  max-width: 460px;
+	max-width: 460px;
 }
 
 .auth-card {
-  display: grid;
-  gap: 1rem;
+	display: grid;
+	gap: 1rem;
 }
 
 .auth-card a {
-  color: var(--accent);
+	color: var(--accent);
 }
 
 .auth-card a:hover {
-  text-decoration: underline;
+	text-decoration: underline;
 }
 
 /* ── Forms ───────────────────────────────────── */
 label {
-  color: var(--text-sub);
-  display: grid;
-  font-size: 0.9rem;
-  font-weight: 700;
-  gap: 0.4rem;
+	color: var(--text-sub);
+	display: grid;
+	font-size: 0.9rem;
+	font-weight: 700;
+	gap: 0.4rem;
 }
 
 label span {
-  color: var(--text-sub);
+	color: var(--text-sub);
 }
 
 label span em {
-  font-weight: 400;
-  color: var(--text-muted);
+	font-weight: 400;
+	color: var(--text-muted);
 }
 
 input,
 textarea {
-  border: 1px solid var(--border);
-  border-radius: 0.5rem;
-  font: inherit;
-  min-height: 2.75rem;
-  padding: 0.65rem 0.75rem;
-  background: var(--bg);
-  color: var(--text);
+	border: 1px solid var(--border);
+	border-radius: 0.5rem;
+	font: inherit;
+	min-height: 2.75rem;
+	padding: 0.65rem 0.75rem;
+	background: var(--bg);
+	color: var(--text);
 }
 
 input:focus,
 textarea:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(136, 192, 208, 0.2);
+	outline: none;
+	border-color: var(--accent);
+	box-shadow: 0 0 0 3px rgba(136, 192, 208, 0.2);
 }
 
 .error {
-  background: rgba(191, 97, 106, 0.15);
-  border: 1px solid var(--danger);
-  border-radius: 0.5rem;
-  color: var(--danger);
-  font-size: 0.9rem;
-  padding: 0.65rem 0.75rem;
-  margin: 0;
+	background: rgba(191, 97, 106, 0.15);
+	border: 1px solid var(--danger);
+	border-radius: 0.5rem;
+	color: var(--danger);
+	font-size: 0.9rem;
+	padding: 0.65rem 0.75rem;
+	margin: 0;
 }
 
 /* ── Misc ────────────────────────────────────── */
 .link-button {
-  background: none;
-  border: none;
-  color: var(--text);
-  cursor: pointer;
-  font: inherit;
-  font-size: 0.95rem;
-  padding: 0;
+	background: none;
+	border: none;
+	color: var(--text);
+	cursor: pointer;
+	font: inherit;
+	font-size: 0.95rem;
+	padding: 0;
 }
 
 .link-button:hover {
-  text-decoration: underline;
-  color: var(--accent);
+	text-decoration: underline;
+	color: var(--accent);
 }
 
 .divider {
-  align-items: center;
-  color: var(--text-muted);
-  display: flex;
-  font-size: 0.85rem;
-  gap: 0.75rem;
+	align-items: center;
+	color: var(--text-muted);
+	display: flex;
+	font-size: 0.85rem;
+	gap: 0.75rem;
 }
 
 .divider::before,
 .divider::after {
-  border-top: 1px solid var(--border);
-  content: "";
-  flex: 1;
+	border-top: 1px solid var(--border);
+	content: "";
+	flex: 1;
 }
