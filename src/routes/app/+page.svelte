@@ -1,5 +1,7 @@
 <script lang="ts">
-import { base } from "$app/paths";
+import Button from "$lib/client/atoms/Button.svelte";
+import EmptyState from "$lib/client/molecules/EmptyState.svelte";
+import CourseCard from "$lib/client/organisms/CourseCard.svelte";
 
 let { data } = $props();
 </script>
@@ -10,45 +12,18 @@ let { data } = $props();
       <p class="eyebrow">Dashboard</p>
       <h1>Your courses</h1>
     </div>
-    <a class="button primary" href="{base}/app/courses/new">New course</a>
+    <Button variant="primary" href="/app/courses/new">New course</Button>
   </section>
 
   {#if data.courses.length === 0}
-    <section class="empty-state">
-      <h2>No courses yet</h2>
-      <p>Create your first course to start building your vocabulary.</p>
-    </section>
+    <EmptyState
+      title="No courses yet"
+      description="Create your first course to start building your vocabulary."
+    />
   {:else}
     <section class="course-grid">
       {#each data.courses as course}
-        <a class="course-card" href="{base}/app/courses/{course.id}">
-          <h3>{course.title}</h3>
-          {#if course.description}
-            <p class="desc">{course.description}</p>
-          {/if}
-          <div class="langs">
-            {#if course.sourceLanguage}
-              <span class="lang">{course.sourceLanguage}</span>
-            {/if}
-            {#if course.sourceLanguage && course.targetLanguage}
-              <span class="arrow">→</span>
-            {/if}
-            {#if course.targetLanguage}
-              <span class="lang">{course.targetLanguage}</span>
-            {/if}
-          </div>
-          <div class="stats">
-            <span>
-              {course.stats.dueCards} due
-            </span>
-            <span>
-              {course.stats.totalCards} cards
-            </span>
-            <span>
-              {course.stats.reviewedToday} today
-            </span>
-          </div>
-        </a>
+        <CourseCard showDue {course} />
       {/each}
     </section>
   {/if}
@@ -71,11 +46,12 @@ let { data } = $props();
   }
 
   .eyebrow {
-    font-size: 0.75rem;
-    text-transform: uppercase;
+    color: var(--c-accent, #88c0d0);
+    font-size: 0.78rem;
+    font-weight: 700;
     letter-spacing: 0.08em;
-    color: var(--c-text-sub, #666);
     margin: 0 0 0.25rem;
+    text-transform: uppercase;
   }
 
   h1 {
@@ -84,113 +60,16 @@ let { data } = $props();
     line-height: 1;
   }
 
-  .button {
-    display: inline-block;
-    padding: 0.5rem 1.25rem;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.9rem;
-    cursor: pointer;
-  }
-
-  .button.primary {
-    background: var(--c-accent, #6366f1);
-    color: var(--accent-text);
-  }
-
-  .button.primary:hover {
-    opacity: 0.9;
-  }
-
-  .empty-state {
-    text-align: center;
-    padding: 4rem 1rem;
-    color: var(--c-text-sub, #666);
-  }
-
   .course-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
     gap: 1rem;
   }
 
-  .course-card {
-    display: block;
-    padding: 1.25rem;
-    border: 1px solid var(--c-border, #e0e0e0);
-    border-radius: 8px;
-    background: rgba(59, 66, 82, 0.78);
-    text-decoration: none;
-    color: inherit;
-    min-height: 12rem;
-    transition:
-      transform 0.15s,
-      box-shadow 0.15s,
-      border-color 0.15s;
-  }
-
-  .course-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-    border-color: var(--c-accent, #6366f1);
-  }
-
-  .course-card h3 {
-    margin: 0 0 0.4rem;
-    font-size: 1.1rem;
-  }
-
-  .desc {
-    font-size: 0.85rem;
-    color: var(--c-text-sub, #666);
-    margin: 0 0 0.6rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .langs {
-    font-size: 0.8rem;
-    color: var(--c-text-sub, #888);
-    margin-bottom: 0.75rem;
-  }
-
-  .lang {
-    background: var(--c-bg-sub, #f0f0f0);
-    border: 1px solid var(--c-border);
-    padding: 0.15rem 0.5rem;
-    border-radius: 4px;
-  }
-
-  .arrow {
-    margin: 0 0.3rem;
-  }
-
-  .stats {
-    display: flex;
-    gap: 1rem;
-    font-size: 0.8rem;
-    color: var(--c-text-sub, #888);
-  }
-
-  .stats span:first-child {
-    color: var(--c-accent, #6366f1);
-    font-weight: 600;
-  }
-
   @media (max-width: 640px) {
-    .page-header :global(.button),
-    .button {
+    .page-header :global(.button) {
       width: 100%;
       text-align: center;
-    }
-
-    .stats {
-      flex-wrap: wrap;
-      gap: 0.6rem 1rem;
     }
   }
 </style>

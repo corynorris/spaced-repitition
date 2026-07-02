@@ -1,23 +1,45 @@
 <script lang="ts">
 import { enhance } from "$app/forms";
 import { base } from "$app/paths";
+import BackLink from "$lib/client/molecules/BackLink.svelte";
+import Button from "$lib/client/atoms/Button.svelte";
+import Input from "$lib/client/atoms/Input.svelte";
+import Select from "$lib/client/atoms/Select.svelte";
+import Textarea from "$lib/client/atoms/Textarea.svelte";
+import ErrorBanner from "$lib/client/atoms/ErrorBanner.svelte";
+import FormField from "$lib/client/molecules/FormField.svelte";
+import SectionHeading from "$lib/client/SectionHeading.svelte";
+import PageHeading from "$lib/client/PageHeading.svelte";
+import ModePicker from "$lib/client/organisms/ModePicker.svelte";
+import CourseForm from "$lib/client/organisms/CourseForm.svelte";
+import AiCoursePreview from "$lib/client/organisms/AiCoursePreview.svelte";
 
 let { form } = $props();
-const f = $derived(form as any);
+const f = form as any;
 
-let languageProfile = $state("generic");
-let targetLanguage = $state("");
-let sourceLanguage = $state("English");
+const initial = f;
+let mode = $state<"ai" | "manual" | null>(initial?.mode ?? null);
+let languageProfile = $state(initial?.values?.languageProfile ?? "generic");
+let targetLanguage = $state(initial?.values?.targetLanguage ?? "");
+let sourceLanguage = $state(initial?.values?.sourceLanguage ?? "English");
 let aiTopic = $state("");
 let aiLoading = $state(false);
 let aiError = $state("");
 let aiPreview = $state<any>(null);
+
+const isJapanese = $derived(languageProfile === "japanese");
 
 $effect(() => {
 	if (languageProfile === "japanese" && !targetLanguage) {
 		targetLanguage = "Japanese";
 	}
 });
+
+function chooseMode(nextMode: "ai" | "manual") {
+	mode = nextMode;
+	aiError = "";
+	aiPreview = null;
+}
 
 async function generateAiCourse() {
 	aiLoading = true;
@@ -49,132 +71,91 @@ async function generateAiCourse() {
 </script>
 
 <main class="page">
-  <a class="back" href="{base}/app">← Back to dashboard</a>
-  <h1>New course</h1>
+  <BackLink href="/app" label="Back to dashboard" />
 
-  <form method="POST" use:enhance class="form">
-    <label>
-      <span>Language profile</span>
-      <select name="languageProfile" bind:value={languageProfile}>
-        <option value="generic">Generic</option>
-        <option value="japanese">Japanese</option>
-      </select>
-    </label>
+  <PageHeading eyebrow="Create course" title="Start with AI or build it manually." />
 
-    <label>
-      <span>Title</span>
-      <input
-        type="text"
-        name="title"
-        required
-        maxlength="120"
-        placeholder="e.g. Japanese N5 Vocabulary"
-        value={(form as any)?.values?.title ?? ""}
+  <ModePicker {mode} onchoose={chooseMode} />
+
+  {#if mode === "manual"}
+    <CourseForm
+      {languageProfile}
+      {sourceLanguage}
+      {targetLanguage}
+      {isJapanese}
+      formValues={f?.values}
+      formErrors={f?.errors}
+    />
+  {:else if mode === "ai"}
+    <section class="panel">
+      <SectionHeading
+        title="AI course generator"
+        description="Set the language context, then describe the course you want."
       />
-      {#if (form as any)?.errors?.title}
-        <span class="error">{(form as any).errors.title.join(", ")}</span>
-      {/if}
-    </label>
 
-    <label>
-      <span>Description <em>(optional)</em></span>
-      <textarea
-        name="description"
-        maxlength="2000"
-        rows="3"
-        placeholder="Brief description of this course"
-      >{(form as any)?.values?.description ?? ""}</textarea>
-    </label>
+      <div class="row">
+        <FormField label="Language profile">
+          <Select name="languageProfile" value={languageProfile} onchange={(e) => languageProfile = (e.target as HTMLSelectElement).value}>
+            <option value="generic">Generic</option>
+            <option value="japanese">Japanese</option>
+          </Select>
+        </FormField>
 
-    <div class="row">
-      <label>
-        <span>Source language <em>(learner/base)</em></span>
-        <input
-          type="text"
-          name="sourceLanguage"
-          maxlength="80"
-          placeholder="e.g. English"
-          bind:value={sourceLanguage}
-        />
-      </label>
-
-      <label>
-        <span>Target language <em>(being studied)</em></span>
-        <input
-          type="text"
-          name="targetLanguage"
-          maxlength="80"
-          placeholder="e.g. Japanese"
-          bind:value={targetLanguage}
-        />
-      </label>
-    </div>
-
-    <button type="submit" class="button primary">Create course</button>
-  </form>
-
-  <section class="ai-panel">
-    <h2>Generate with AI</h2>
-    <label>
-      <span>Course topic</span>
-      <textarea
-        rows="3"
-        maxlength="300"
-        bind:value={aiTopic}
-        placeholder="e.g. beginner Japanese for ordering at restaurants"
-      ></textarea>
-    </label>
-    <button class="button" type="button" disabled={aiLoading || !aiTopic} onclick={generateAiCourse}>
-      {aiLoading ? "Generating..." : "Generate preview"}
-    </button>
-    {#if aiError || f?.aiError}
-      <p class="error">{aiError || f.aiError}</p>
-    {/if}
-
-    {#if aiPreview}
-      <div class="preview">
-        <h3>{aiPreview.title}</h3>
-        {#if aiPreview.description}
-          <p>{aiPreview.description}</p>
-        {/if}
-        <ul>
-          {#each aiPreview.lessons as lesson}
-            <li>{lesson.title} ({lesson.type})</li>
-          {/each}
-        </ul>
-        <form method="POST" action="?/createAiCourse" use:enhance>
-          <input type="hidden" name="preview" value={JSON.stringify(aiPreview)} />
-          <button class="button primary" type="submit">Create this course</button>
-        </form>
+        <FormField label="Source language">
+          <Input
+            name="sourceLanguage"
+            maxlength={80}
+            placeholder="e.g. English"
+            value={sourceLanguage}
+            oninput={(e) => sourceLanguage = (e.target as HTMLInputElement).value}
+          />
+        </FormField>
       </div>
-    {/if}
-  </section>
+
+      <FormField label={isJapanese ? "Target language" : "Target subject/language"}>
+        <Input
+          name="targetLanguage"
+          maxlength={80}
+          placeholder={isJapanese ? "Japanese" : "e.g. Spanish, anatomy, calculus"}
+          value={targetLanguage}
+          oninput={(e) => targetLanguage = (e.target as HTMLInputElement).value}
+        />
+      </FormField>
+
+      <FormField label="Course request">
+        <Textarea
+          name="aiTopic"
+          rows={4}
+          maxlength={300}
+          placeholder={isJapanese
+            ? "e.g. beginner Japanese for ordering at restaurants"
+            : "e.g. intro anatomy terms for first-year nursing"}
+          value={aiTopic}
+          oninput={(e) => aiTopic = (e.target as HTMLTextAreaElement).value}
+        />
+      </FormField>
+
+      <Button disabled={aiLoading || !aiTopic} onclick={generateAiCourse}>
+        {aiLoading ? "Generating..." : "Generate preview"}
+      </Button>
+
+      <ErrorBanner message={aiError || f?.aiError} />
+
+      {#if aiPreview}
+        <AiCoursePreview preview={aiPreview} />
+      {/if}
+    </section>
+  {/if}
 </main>
 
 <style>
   .page {
-    max-width: 760px;
+    max-width: 920px;
     margin: 0 auto;
     padding: clamp(1.5rem, 4vw, 3rem) 1rem;
   }
 
-  .back {
-    font-size: 0.85rem;
-    color: var(--c-text-sub, #666);
-    text-decoration: none;
-  }
-
-  .back:hover {
-    text-decoration: underline;
-  }
-
-  h1 {
-    margin: 0.5rem 0 1.5rem;
-    font-size: clamp(2rem, 4vw, 3rem);
-    line-height: 1;
-  }
-
-  .form {
+  .panel {
     background: rgba(59, 66, 82, 0.78);
     border: 1px solid var(--c-border);
     border-radius: 8px;
@@ -183,87 +164,15 @@ async function generateAiCourse() {
     padding: 1rem;
   }
 
-  label {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-  }
-
-  label span {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--c-text, #333);
-  }
-
-  label span em {
-    font-weight: 400;
-    color: var(--c-text-sub, #888);
-    font-size: 0.8rem;
-  }
-
   .row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
     gap: 1rem;
-  }
-
-  .error {
-    font-size: 0.8rem;
-    color: var(--danger);
-  }
-
-  .button {
-    padding: 0.6rem 1.5rem;
-    border-radius: 8px;
-    border: none;
-    font-weight: 600;
-    font-size: 0.95rem;
-    cursor: pointer;
-    align-self: flex-start;
-  }
-
-  .button.primary {
-    background: var(--c-accent, #6366f1);
-    color: var(--accent-text);
-  }
-
-  .button.primary:hover {
-    opacity: 0.9;
-  }
-
-  .ai-panel {
-    margin-top: 2rem;
-    background: rgba(59, 66, 82, 0.78);
-    border: 1px solid var(--c-border, #e0e0e0);
-    border-radius: 8px;
-    display: grid;
-    gap: 1rem;
-    padding: 1rem;
-  }
-
-  .ai-panel h2 {
-    margin: 0;
-    font-size: 1.15rem;
-  }
-
-  .preview {
-    border: 1px solid var(--c-border, #e0e0e0);
-    border-radius: 8px;
-    background: var(--c-bg-sub);
-    padding: 1rem;
-  }
-
-  .preview h3 {
-    margin: 0 0 0.5rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   @media (max-width: 640px) {
     .row {
       grid-template-columns: 1fr;
-    }
-
-    .button {
-      width: 100%;
     }
   }
 </style>

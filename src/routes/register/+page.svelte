@@ -1,46 +1,22 @@
 <script lang="ts">
 import { enhance } from "$app/forms";
-import { base } from "$app/paths";
-import { authClient } from "$lib/client/auth";
+import AuthForm from "$lib/client/organisms/AuthForm.svelte";
+import Button from "$lib/client/atoms/Button.svelte";
+import Input from "$lib/client/atoms/Input.svelte";
+import FormField from "$lib/client/molecules/FormField.svelte";
 
 let { data, form } = $props();
-
-function signInWithZitadel() {
-	authClient.signIn.oauth2({ providerId: "zitadel" });
-}
 </script>
 
-<main class="auth-page">
-  <form class="auth-card" method="POST" use:enhance>
-    <p class="eyebrow">Create account</p>
-    <h1>Start learning</h1>
-
-    {#if form?.error}
-      <p class="error">{form.error}</p>
-    {/if}
-
-    {#if data.zitadelEnabled}
-      <button class="button primary" type="button" onclick={signInWithZitadel}>
-        Sign up with Zitadel
-      </button>
-      <div class="divider"><span>or</span></div>
-    {/if}
-
-    <label>
-      Name
-      <input name="name" autocomplete="name" />
-    </label>
-    <label>
-      Email
-      <input name="email" type="email" autocomplete="email" required />
-    </label>
-    <label>
-      Password
-      <input name="password" type="password" autocomplete="new-password" required />
-    </label>
-    <button class="button primary" type="submit">Create account</button>
-    <p class="fine-print">
-      Already have an account? <a href="{base}/login">Sign in</a>.
-    </p>
-  </form>
-</main>
+<AuthForm mode="register" error={form?.error} zitadelEnabled={data.zitadelEnabled}>
+  <FormField label="Name" optional>
+    <Input name="name" autocomplete="name" />
+  </FormField>
+  <FormField label="Email">
+    <Input name="email" type="email" autocomplete="email" required />
+  </FormField>
+  <FormField label="Password">
+    <Input name="password" type="password" autocomplete="new-password" required />
+  </FormField>
+  <Button variant="primary" type="submit">Create account</Button>
+</AuthForm>
