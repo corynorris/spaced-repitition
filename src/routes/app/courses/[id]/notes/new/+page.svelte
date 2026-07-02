@@ -193,7 +193,7 @@
 
   .error {
     font-size: 0.8rem;
-    color: #e53e3e;
+    color: var(--danger);
   }
 
   .button {

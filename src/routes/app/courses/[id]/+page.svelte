@@ -145,8 +145,8 @@
   }
 
   .button.accent {
-    background: #10b981;
-    color: white;
+    background: var(--success);
+    color: var(--bg);
   }
 
   .button:hover {
@@ -154,7 +154,7 @@
   }
 
   .done {
-    color: #10b981;
+    color: var(--success);
     font-weight: 600;
     font-size: 0.9rem;
   }

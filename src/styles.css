@@ -1,6 +1,55 @@
+/* Nord theme — https://www.nordtheme.com */
 :root {
-  color: #0f172a;
-  background: #f8fafc;
+  /* Polar Night (backgrounds) */
+  --nord0: #2E3440;
+  --nord1: #3B4252;
+  --nord2: #434C5E;
+  --nord3: #4C566A;
+
+  /* Snow Storm (foreground / text) */
+  --nord4: #D8DEE9;
+  --nord5: #E5E9F0;
+  --nord6: #ECEFF4;
+
+  /* Frost (cool accents) */
+  --nord7: #8FBCBB;
+  --nord8: #88C0D0;
+  --nord9: #81A1C1;
+  --nord10: #5E81AC;
+
+  /* Aurora (pops of color) */
+  --nord11: #BF616A;
+  --nord12: #D08770;
+  --nord13: #EBCB8B;
+  --nord14: #A3BE8C;
+  --nord15: #B48EAD;
+
+  /* Semantic aliases */
+  --bg: var(--nord0);
+  --bg-elevated: var(--nord1);
+  --bg-hover: var(--nord2);
+  --border: var(--nord3);
+  --text: var(--nord6);
+  --text-sub: var(--nord4);
+  --text-muted: var(--nord9);
+  --accent: var(--nord8);
+  --accent-hover: var(--nord7);
+  --danger: var(--nord11);
+  --warning: var(--nord13);
+  --success: var(--nord14);
+  --info: var(--nord10);
+  --purple: var(--nord15);
+
+  /* Legacy aliases used by page-level CSS */
+  --c-accent: var(--nord8);
+  --c-text: var(--nord6);
+  --c-text-sub: var(--nord4);
+  --c-bg: var(--nord0);
+  --c-bg-sub: var(--nord1);
+  --c-border: var(--nord3);
+
+  color: var(--text);
+  background: var(--bg);
   font-family:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
@@ -22,10 +71,11 @@ a {
   min-height: 100vh;
 }
 
+/* ── Topbar ──────────────────────────────────── */
 .topbar {
   align-items: center;
-  background: #ffffff;
-  border-bottom: 1px solid #e2e8f0;
+  background: var(--bg-elevated);
+  border-bottom: 1px solid var(--border);
   display: flex;
   justify-content: space-between;
   padding: 1rem clamp(1rem, 4vw, 2rem);
@@ -33,14 +83,17 @@ a {
 
 .brand {
   font-weight: 700;
+  color: var(--accent);
 }
 
 .topbar nav {
   display: flex;
   gap: 1rem;
   font-size: 0.95rem;
+  align-items: center;
 }
 
+/* ── Shared page layout ──────────────────────── */
 .hero,
 .page,
 .auth-page {
@@ -62,6 +115,7 @@ a {
   letter-spacing: 0;
   line-height: 1;
   margin: 0;
+  color: var(--text);
 }
 
 .page-header h1,
@@ -70,7 +124,7 @@ a {
 }
 
 .eyebrow {
-  color: #2563eb;
+  color: var(--accent);
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -79,7 +133,7 @@ a {
 }
 
 .lede {
-  color: #475569;
+  color: var(--text-sub);
   font-size: 1.15rem;
   line-height: 1.6;
   max-width: 680px;
@@ -96,27 +150,45 @@ a {
   justify-content: space-between;
 }
 
+/* ── Buttons ─────────────────────────────────── */
 .button {
   align-items: center;
-  border: 1px solid #cbd5e1;
+  border: 1px solid var(--border);
   border-radius: 0.5rem;
   display: inline-flex;
   font-weight: 700;
   justify-content: center;
   min-height: 2.75rem;
   padding: 0.65rem 1rem;
+  background: var(--bg-elevated);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.button:hover {
+  background: var(--bg-hover);
 }
 
 .button.primary {
-  background: #0f172a;
-  border-color: #0f172a;
-  color: #ffffff;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+  font-weight: 700;
 }
 
+.button.primary:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  opacity: 1;
+}
+
+/* ── Cards / Empty states ────────────────────── */
 .empty-state,
 .auth-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
   border-radius: 0.5rem;
   margin-top: 2rem;
   padding: 1.5rem;
@@ -124,10 +196,16 @@ a {
 
 .empty-state p,
 .fine-print {
-  color: #64748b;
+  color: var(--text-sub);
   line-height: 1.6;
 }
 
+.empty-state h2 {
+  color: var(--text);
+  margin-top: 0;
+}
+
+/* ── Auth pages ──────────────────────────────── */
 .auth-page {
   max-width: 460px;
 }
@@ -137,36 +215,65 @@ a {
   gap: 1rem;
 }
 
+.auth-card a {
+  color: var(--accent);
+}
+
+.auth-card a:hover {
+  text-decoration: underline;
+}
+
+/* ── Forms ───────────────────────────────────── */
 label {
-  color: #334155;
+  color: var(--text-sub);
   display: grid;
   font-size: 0.9rem;
   font-weight: 700;
   gap: 0.4rem;
 }
 
-input {
-  border: 1px solid #cbd5e1;
+label span {
+  color: var(--text-sub);
+}
+
+label span em {
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+input,
+textarea {
+  border: 1px solid var(--border);
   border-radius: 0.5rem;
   font: inherit;
   min-height: 2.75rem;
   padding: 0.65rem 0.75rem;
+  background: var(--bg);
+  color: var(--text);
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(136, 192, 208, 0.2);
 }
 
 .error {
-  background: #fef2f2;
-  border: 1px solid #fecaca;
+  background: rgba(191, 97, 106, 0.15);
+  border: 1px solid var(--danger);
   border-radius: 0.5rem;
-  color: #991b1b;
+  color: var(--danger);
   font-size: 0.9rem;
   padding: 0.65rem 0.75rem;
   margin: 0;
 }
 
+/* ── Misc ────────────────────────────────────── */
 .link-button {
   background: none;
   border: none;
-  color: inherit;
+  color: var(--text);
   cursor: pointer;
   font: inherit;
   font-size: 0.95rem;
@@ -175,11 +282,12 @@ input {
 
 .link-button:hover {
   text-decoration: underline;
+  color: var(--accent);
 }
 
 .divider {
   align-items: center;
-  color: #94a3b8;
+  color: var(--text-muted);
   display: flex;
   font-size: 0.85rem;
   gap: 0.75rem;
@@ -187,7 +295,7 @@ input {
 
 .divider::before,
 .divider::after {
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid var(--border);
   content: "";
   flex: 1;
 }

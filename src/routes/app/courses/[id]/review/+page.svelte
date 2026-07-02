@@ -330,18 +330,18 @@
   }
 
   .again {
-    background: #ef4444;
+    background: var(--danger);
   }
 
   .hard {
-    background: #f59e0b;
+    background: var(--warning);
   }
 
   .good {
-    background: #10b981;
+    background: var(--success);
   }
 
   .easy {
-    background: #6366f1;
+    background: var(--info);
   }
 </style>
