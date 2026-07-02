@@ -1,4 +1,5 @@
 <script lang="ts">
+import { base } from "$app/paths";
 import Button from "$lib/client/atoms/Button.svelte";
 import EmptyState from "$lib/client/molecules/EmptyState.svelte";
 import CourseCard from "$lib/client/organisms/CourseCard.svelte";
@@ -12,7 +13,7 @@ let { data } = $props();
       <p class="eyebrow">Dashboard</p>
       <h1>Your courses</h1>
     </div>
-    <Button variant="primary" href="/app/courses/new">New course</Button>
+    <Button variant="primary" href="{base}/app/courses/new">New course</Button>
   </section>
 
   {#if data.courses.length === 0}

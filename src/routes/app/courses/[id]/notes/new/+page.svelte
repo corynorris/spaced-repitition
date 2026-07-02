@@ -1,4 +1,5 @@
 <script lang="ts">
+import { base } from "$app/paths";
 import BackLink from "$lib/client/molecules/BackLink.svelte";
 import NoteForm from "$lib/client/organisms/NoteForm.svelte";
 
@@ -8,7 +9,7 @@ const isJapanese = $derived(data.course.languageProfile === "japanese");
 </script>
 
 <main class="page">
-  <BackLink href="/app/courses/{data.course.id}" label="Back to {data.course.title}" />
+  <BackLink href="{base}/app/courses/{data.course.id}" label="Back to {data.course.title}" />
   <h1>Add note</h1>
 
   <NoteForm

@@ -78,7 +78,7 @@ async function askDiscussion() {
 </script>
 
 <main class="page">
-  <BackLink href="/app" label="Dashboard" />
+  <BackLink href="{base}/app" label="Dashboard" />
 
   <section class="course-header">
     <h1>{data.course.title}</h1>
@@ -100,11 +100,11 @@ async function askDiscussion() {
   </section>
 
   <section class="actions">
-    <Button variant="primary" href="/app/courses/{data.course.id}/notes/new">
+    <Button variant="primary" href="{base}/app/courses/{data.course.id}/notes/new">
       + Add note
     </Button>
     {#if data.stats.dueCards > 0}
-      <Button variant="accent" href="/app/courses/{data.course.id}/review">
+      <Button variant="accent" href="{base}/app/courses/{data.course.id}/review">
         Study ({data.stats.dueCards} due)
       </Button>
     {:else if data.stats.totalCards > 0}

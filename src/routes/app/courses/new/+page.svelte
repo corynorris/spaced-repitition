@@ -71,7 +71,7 @@ async function generateAiCourse() {
 </script>
 
 <main class="page">
-  <BackLink href="/app" label="Back to dashboard" />
+  <BackLink href="{base}/app" label="Back to dashboard" />
 
   <PageHeading eyebrow="Create course" title="Start with AI or build it manually." />
 

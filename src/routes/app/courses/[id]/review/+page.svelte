@@ -108,13 +108,13 @@ function handleKeydown(e: KeyboardEvent) {
 <svelte:window onkeydown={handleKeydown} />
 
 <main class="page">
-	<BackLink href="/app/courses/{data.course.id}" label="Back to {data.course.title}" />
+	<BackLink href="{base}/app/courses/{data.course.id}" label="Back to {data.course.title}" />
 
 	{#if dueLength === 0 || finished}
 		<section class="done-state">
 			<h1>All done! 🎉</h1>
 			<p>No more cards due for review.</p>
-			<Button variant="primary" href="/app/courses/{data.course.id}">Back to course</Button>
+			<Button variant="primary" href="{base}/app/courses/{data.course.id}">Back to course</Button>
 		</section>
 	{:else}
 		<section class="review-area">
