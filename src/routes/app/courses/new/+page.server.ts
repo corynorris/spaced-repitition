@@ -29,7 +29,7 @@ function courseCreateError(err: unknown) {
 }
 
 export const actions: Actions = {
-	default: async ({ request, locals }) => {
+	createManualCourse: async ({ request, locals }) => {
 		if (!locals.user) throw redirect(303, `${base}/login`);
 
 		const formData = await request.formData();

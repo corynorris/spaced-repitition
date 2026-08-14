@@ -32,7 +32,7 @@
 	const err = $derived(formErrors);
 </script>
 
-<form method="POST" use:enhance class="panel">
+<form method="POST" action="?/createManualCourse" use:enhance class="panel">
 	<input type="hidden" name="languageProfile" value={languageProfile} />
 
 	<SectionHeading
