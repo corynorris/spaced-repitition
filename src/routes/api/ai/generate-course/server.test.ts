@@ -5,11 +5,11 @@ const mocks = vi.hoisted(() => ({
 	generateCoursePreview: vi.fn(),
 }));
 
-vi.mock("$lib/server/services/ai/rate-limit", () => ({
+vi.mock("#lib/server/services/ai/rate-limit", () => ({
 	assertAiRateLimit: mocks.assertAiRateLimit,
 }));
 
-vi.mock("$lib/server/services/ai/generate", () => ({
+vi.mock("#lib/server/services/ai/generate", () => ({
 	generateCoursePreview: mocks.generateCoursePreview,
 }));
 

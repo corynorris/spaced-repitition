@@ -4,15 +4,15 @@ import {
 	lessons,
 	notes,
 	reviewStates,
-} from "$lib/server/db/schema";
-import type { Database } from "$lib/server/db/client";
+} from "#lib/server/db/schema";
+import type { Database } from "#lib/server/db/client";
 import { eq } from "drizzle-orm";
-import { buildSentenceCards, buildVocabularyCards } from "$lib/cards/kinds";
+import { buildSentenceCards, buildVocabularyCards } from "#lib/cards/kinds";
 import {
 	defaultDisplayOptions,
 	normalizeDisplayOptions,
 	normalizeLanguageProfile,
-} from "$lib/language/profiles";
+} from "#lib/language/profiles";
 import type {
 	AiCoursePreview,
 	AiLessonPreview,

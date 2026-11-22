@@ -1,7 +1,7 @@
 import { svelteKitHandler } from "better-auth/svelte-kit";
-import { auth } from "$lib/server/auth";
-import type { Handle } from "@sveltejs/kit";
-import { building } from "$app/environment";
+import { auth } from "#lib/server/auth";
+import type { Handle } from "@sveltejs/kit/hooks";
+import { building } from "$app/env";
 
 export const handle: Handle = async ({ event, resolve }) => {
 	// Let Better Auth handle its own API routes.

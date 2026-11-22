@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { labelForCardKind } from "$lib/cards/kinds";
-	import { gradeSentenceCloze, splitClozeSentence } from "$lib/cards/grading";
+	import { labelForCardKind } from "#lib/cards/kinds";
+	import { gradeSentenceCloze, splitClozeSentence } from "#lib/cards/grading";
 
 	let {
 		card,

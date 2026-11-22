@@ -1,14 +1,14 @@
 import { eq, and, like, or, desc, lte, inArray, sql } from "drizzle-orm";
-import { notes, cards, reviewStates, reviewLogs } from "$lib/server/db/schema";
-import type { Database } from "$lib/server/db/client";
-import type { NoteInput } from "$lib/validation/note";
-import { buildVocabularyCards } from "$lib/cards/kinds";
+import { notes, cards, reviewStates, reviewLogs } from "#lib/server/db/schema";
+import type { Database } from "#lib/server/db/client";
+import type { NoteInput } from "#lib/validation/note";
+import { buildVocabularyCards } from "#lib/cards/kinds";
 import {
 	normalizeDisplayOptions,
 	normalizeLanguageProfile,
 	type DisplayOptions,
 	type LanguageProfile,
-} from "$lib/language/profiles";
+} from "#lib/language/profiles";
 
 export async function listNotesForCourse(db: Database, courseId: string) {
 	return db

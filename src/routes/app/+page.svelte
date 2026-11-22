@@ -1,8 +1,8 @@
 <script lang="ts">
-import { base } from "$app/paths";
-import Button from "$lib/client/atoms/Button.svelte";
-import EmptyState from "$lib/client/molecules/EmptyState.svelte";
-import CourseCard from "$lib/client/organisms/CourseCard.svelte";
+import { base } from "#lib/paths";
+import Button from "#lib/client/atoms/Button.svelte";
+import EmptyState from "#lib/client/molecules/EmptyState.svelte";
+import CourseCard from "#lib/client/organisms/CourseCard.svelte";
 
 let { data } = $props();
 </script>

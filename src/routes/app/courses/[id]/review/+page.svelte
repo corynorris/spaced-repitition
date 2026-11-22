@@ -1,14 +1,14 @@
 <script lang="ts">
 import { enhance } from "$app/forms";
-import { base } from "$app/paths";
-import { labelForCardKind } from "$lib/cards/kinds";
-import { isAutoGradedCardKind } from "$lib/cards/grading";
-import BackLink from "$lib/client/molecules/BackLink.svelte";
-import Button from "$lib/client/atoms/Button.svelte";
-import ReviewCard from "$lib/client/organisms/ReviewCard.svelte";
-import RatingButtons from "$lib/client/organisms/RatingButtons.svelte";
-import SentenceOrderCard from "$lib/client/organisms/SentenceOrderCard.svelte";
-import ClozeCard from "$lib/client/organisms/ClozeCard.svelte";
+import { base } from "#lib/paths";
+import { labelForCardKind } from "#lib/cards/kinds";
+import { isAutoGradedCardKind } from "#lib/cards/grading";
+import BackLink from "#lib/client/molecules/BackLink.svelte";
+import Button from "#lib/client/atoms/Button.svelte";
+import ReviewCard from "#lib/client/organisms/ReviewCard.svelte";
+import RatingButtons from "#lib/client/organisms/RatingButtons.svelte";
+import SentenceOrderCard from "#lib/client/organisms/SentenceOrderCard.svelte";
+import ClozeCard from "#lib/client/organisms/ClozeCard.svelte";
 import type { Component } from "svelte";
 
 let { data } = $props();

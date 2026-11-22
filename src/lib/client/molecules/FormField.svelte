@@ -1,9 +1,9 @@
 <script lang="ts">
-	import Label from "$lib/client/atoms/Label.svelte";
-	import Input from "$lib/client/atoms/Input.svelte";
-	import Textarea from "$lib/client/atoms/Textarea.svelte";
-	import Select from "$lib/client/atoms/Select.svelte";
-	import ErrorBanner from "$lib/client/atoms/ErrorBanner.svelte";
+	import Label from "#lib/client/atoms/Label.svelte";
+	import Input from "#lib/client/atoms/Input.svelte";
+	import Textarea from "#lib/client/atoms/Textarea.svelte";
+	import Select from "#lib/client/atoms/Select.svelte";
+	import ErrorBanner from "#lib/client/atoms/ErrorBanner.svelte";
 	import type { Snippet } from "svelte";
 
 	let {

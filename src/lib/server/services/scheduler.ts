@@ -1,15 +1,8 @@
-import {
-	createEmptyCard,
-	fsrs,
-	Rating,
-	type Card,
-	type Grade,
-	type RecordLogItem,
-} from "ts-fsrs";
+import { createEmptyCard, fsrs, Rating, type Grade } from "ts-fsrs";
 import { and, eq } from "drizzle-orm";
-import { reviewStates, reviewLogs, cards } from "$lib/server/db/schema";
-import type { Database } from "$lib/server/db/client";
-import type { ReviewRatingInput } from "$lib/validation/review";
+import { reviewStates, reviewLogs, cards } from "#lib/server/db/schema";
+import type { Database } from "#lib/server/db/client";
+import type { ReviewRatingInput } from "#lib/validation/review";
 
 const scheduler = fsrs();
 
@@ -26,12 +19,11 @@ function ratingToFsrs(rating: ReviewRatingInput): Rating {
 	}
 }
 
-function dbStateToCard(state: typeof reviewStates.$inferSelect): Card {
+function dbStateToCard(state: typeof reviewStates.$inferSelect) {
 	return {
 		due: state.dueAt,
 		stability: state.stability ?? 0,
 		difficulty: state.difficulty ?? 0,
-		elapsed_days: state.elapsedDays,
 		scheduled_days: state.scheduledDays,
 		reps: state.reps,
 		lapses: state.lapses,
@@ -73,6 +65,19 @@ function fsrsStateToDb(
 	}
 }
 
+/**
+ * Whole days since the card was last reviewed.
+ *
+ * ts-fsrs 6 removed `elapsed_days` from its (now legacy) `Card` type, so the
+ * value is derived from the stored review timestamp instead.
+ */
+function elapsedDaysSince(previousReview: Date): number {
+	const days = Math.floor(
+		(Date.now() - previousReview.getTime()) / (24 * 60 * 60 * 1000),
+	);
+	return Math.max(0, days);
+}
+
 /** Process a review for a card and return the updated review state. */
 export async function processReview(
 	db: Database,
@@ -89,7 +94,7 @@ export async function processReview(
 		// Initialize a new review state if missing
 		const card = createEmptyCard(new Date());
 		const fsrsRating = ratingToFsrs(rating);
-		const result: RecordLogItem = scheduler.repeat(card, new Date())[
+		const result = scheduler.repeat(card, new Date())[
 			fsrsRating as Grade
 		];
 
@@ -101,7 +106,9 @@ export async function processReview(
 				dueAt: result.card.due,
 				stability: result.card.stability,
 				difficulty: result.card.difficulty,
-				elapsedDays: result.card.elapsed_days,
+				// ts-fsrs 6 dropped `elapsed_days` from the legacy card; a brand
+				// new card has no previous review, so it is always 0.
+				elapsedDays: 0,
 				scheduledDays: result.card.scheduled_days,
 				reps: result.card.reps,
 				lapses: result.card.lapses,
@@ -124,7 +131,7 @@ export async function processReview(
 
 	const card = dbStateToCard(state);
 	const fsrsRating = ratingToFsrs(rating);
-	const result: RecordLogItem = scheduler.repeat(card, new Date())[
+	const result = scheduler.repeat(card, new Date())[
 		fsrsRating as Grade
 	];
 
@@ -135,7 +142,7 @@ export async function processReview(
 			dueAt: result.card.due,
 			stability: result.card.stability,
 			difficulty: result.card.difficulty,
-			elapsedDays: result.card.elapsed_days,
+			elapsedDays: elapsedDaysSince(state.updatedAt),
 			scheduledDays: result.card.scheduled_days,
 			reps: result.card.reps,
 			lapses: result.card.lapses,

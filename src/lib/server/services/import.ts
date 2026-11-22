@@ -1,4 +1,4 @@
-import { noteInput } from "$lib/validation/note";
+import { noteInput } from "#lib/validation/note";
 
 export function parseBulkNotes(text: string) {
 	return text

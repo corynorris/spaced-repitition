@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Topbar from "$lib/client/organisms/Topbar.svelte";
+	import Topbar from "#lib/client/organisms/Topbar.svelte";
 	import type { Snippet } from "svelte";
 
 	let {

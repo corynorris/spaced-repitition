@@ -1,6 +1,6 @@
 import { redirect } from "@sveltejs/kit";
-import { base } from "$app/paths";
-import { auth } from "$lib/server/auth";
+import { base } from "#lib/paths";
+import { auth } from "#lib/server/auth";
 import type { Actions } from "./$types";
 
 export const actions: Actions = {

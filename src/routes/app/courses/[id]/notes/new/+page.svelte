@@ -1,7 +1,7 @@
 <script lang="ts">
-import { base } from "$app/paths";
-import BackLink from "$lib/client/molecules/BackLink.svelte";
-import NoteForm from "$lib/client/organisms/NoteForm.svelte";
+import { base } from "#lib/paths";
+import BackLink from "#lib/client/molecules/BackLink.svelte";
+import NoteForm from "#lib/client/organisms/NoteForm.svelte";
 
 let { data, form } = $props();
 const f = $derived(form as any);

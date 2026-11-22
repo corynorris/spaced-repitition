@@ -2,16 +2,16 @@ import { error } from "@sveltejs/kit";
 import {
 	getCourseForUser,
 	updateCourse,
-} from "$lib/server/repositories/courses";
-import { listNotesForCourse } from "$lib/server/repositories/notes";
-import { getReviewStats } from "$lib/server/services/scheduler";
+} from "#lib/server/repositories/courses";
+import { listNotesForCourse } from "#lib/server/repositories/notes";
+import { getReviewStats } from "#lib/server/services/scheduler";
 import {
 	normalizeDisplayOptions,
 	normalizeLanguageProfile,
-} from "$lib/language/profiles";
-import { aiPracticePreviewSchema } from "$lib/server/services/ai/schemas";
-import { persistPracticePreview } from "$lib/server/services/ai/persist";
-import { db } from "$lib/server/db/client";
+} from "#lib/language/profiles";
+import { aiPracticePreviewSchema } from "#lib/server/services/ai/schemas";
+import { persistPracticePreview } from "#lib/server/services/ai/persist";
+import { db } from "#lib/server/db/client";
 import type { Actions, PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async ({ params, locals }) => {

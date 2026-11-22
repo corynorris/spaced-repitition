@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { enhance } from "$app/forms";
-	import { base } from "$app/paths";
-	import Button from "$lib/client/atoms/Button.svelte";
-	import Divider from "$lib/client/atoms/Divider.svelte";
-	import ErrorBanner from "$lib/client/atoms/ErrorBanner.svelte";
-	import { authClient } from "$lib/client/auth";
+	import { base } from "#lib/paths";
+	import Button from "#lib/client/atoms/Button.svelte";
+	import Divider from "#lib/client/atoms/Divider.svelte";
+	import ErrorBanner from "#lib/client/atoms/ErrorBanner.svelte";
+	import { authClient } from "#lib/client/auth";
 	import type { Snippet } from "svelte";
 
 	let {
@@ -20,7 +20,7 @@
 	} = $props();
 
 	function signInWithZitadel() {
-		authClient.signIn.oauth2({ providerId: "zitadel" });
+		authClient.signIn.social({ provider: "zitadel" });
 	}
 </script>
 

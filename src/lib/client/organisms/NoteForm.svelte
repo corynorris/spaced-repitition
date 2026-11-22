@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { enhance } from "$app/forms";
-	import Button from "$lib/client/atoms/Button.svelte";
-	import Input from "$lib/client/atoms/Input.svelte";
-	import Textarea from "$lib/client/atoms/Textarea.svelte";
-	import FormField from "$lib/client/molecules/FormField.svelte";
+	import Button from "#lib/client/atoms/Button.svelte";
+	import Input from "#lib/client/atoms/Input.svelte";
+	import Textarea from "#lib/client/atoms/Textarea.svelte";
+	import FormField from "#lib/client/molecules/FormField.svelte";
 
 	let {
 		isJapanese = false,

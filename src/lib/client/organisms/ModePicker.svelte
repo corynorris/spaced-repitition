@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { enhance } from "$app/forms";
-	import { base } from "$app/paths";
-	import Button from "$lib/client/atoms/Button.svelte";
-	import ModeCard from "$lib/client/ModeCard.svelte";
+	import { base } from "#lib/paths";
+	import Button from "#lib/client/atoms/Button.svelte";
+	import ModeCard from "#lib/client/ModeCard.svelte";
 
 	let {
 		mode = null,

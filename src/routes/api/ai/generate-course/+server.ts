@@ -1,8 +1,8 @@
 import { json } from "@sveltejs/kit";
 import { z } from "zod";
-import { generateCoursePreview } from "$lib/server/services/ai/generate";
-import { assertAiRateLimit } from "$lib/server/services/ai/rate-limit";
-import { languageProfileSchema } from "$lib/language/profiles";
+import { generateCoursePreview } from "#lib/server/services/ai/generate";
+import { assertAiRateLimit } from "#lib/server/services/ai/rate-limit";
+import { languageProfileSchema } from "#lib/language/profiles";
 import type { RequestHandler } from "./$types";
 
 const inputSchema = z.object({

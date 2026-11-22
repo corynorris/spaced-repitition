@@ -1,6 +1,6 @@
-import { callLlmWithRetry, loadLlmConfig } from "$lib/server/services/llm";
+import { callLlmWithRetry, loadLlmConfig } from "#lib/server/services/llm";
 import { extractJsonObject, summarizeZodError } from "./json";
-import { logger } from "$lib/server/logger";
+import { logger } from "#lib/server/logger";
 import {
 	aiCoursePreviewSchema,
 	aiPracticePreviewSchema,

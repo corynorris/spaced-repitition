@@ -1,16 +1,16 @@
 <script lang="ts">
 import { enhance } from "$app/forms";
-import { base } from "$app/paths";
-import BackLink from "$lib/client/molecules/BackLink.svelte";
-import EmptyState from "$lib/client/molecules/EmptyState.svelte";
-import Button from "$lib/client/atoms/Button.svelte";
-import ErrorBanner from "$lib/client/atoms/ErrorBanner.svelte";
-import Skeleton from "$lib/client/atoms/Skeleton.svelte";
-import Badge from "$lib/client/atoms/Badge.svelte";
-import CourseStatBar from "$lib/client/organisms/CourseStatBar.svelte";
-import NoteItem from "$lib/client/organisms/NoteItem.svelte";
-import SettingsPanel from "$lib/client/organisms/SettingsPanel.svelte";
-import PracticePreview from "$lib/client/organisms/PracticePreview.svelte";
+import { base } from "#lib/paths";
+import BackLink from "#lib/client/molecules/BackLink.svelte";
+import EmptyState from "#lib/client/molecules/EmptyState.svelte";
+import Button from "#lib/client/atoms/Button.svelte";
+import ErrorBanner from "#lib/client/atoms/ErrorBanner.svelte";
+import Skeleton from "#lib/client/atoms/Skeleton.svelte";
+import Badge from "#lib/client/atoms/Badge.svelte";
+import CourseStatBar from "#lib/client/organisms/CourseStatBar.svelte";
+import NoteItem from "#lib/client/organisms/NoteItem.svelte";
+import SettingsPanel from "#lib/client/organisms/SettingsPanel.svelte";
+import PracticePreview from "#lib/client/organisms/PracticePreview.svelte";
 
 let { data, form } = $props();
 const f = $derived(form as any);

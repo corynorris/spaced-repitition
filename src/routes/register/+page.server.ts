@@ -1,6 +1,6 @@
 import { fail, redirect } from "@sveltejs/kit";
-import { base } from "$app/paths";
-import { auth } from "$lib/server/auth";
+import { base } from "#lib/paths";
+import { auth } from "#lib/server/auth";
 import type { Actions, PageServerLoad } from "./$types";
 
 const zitadelEnabled = Boolean(

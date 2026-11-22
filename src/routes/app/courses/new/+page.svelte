@@ -1,18 +1,18 @@
 <script lang="ts">
 import { enhance } from "$app/forms";
-import { base } from "$app/paths";
-import BackLink from "$lib/client/molecules/BackLink.svelte";
-import Button from "$lib/client/atoms/Button.svelte";
-import Input from "$lib/client/atoms/Input.svelte";
-import Select from "$lib/client/atoms/Select.svelte";
-import Textarea from "$lib/client/atoms/Textarea.svelte";
-import ErrorBanner from "$lib/client/atoms/ErrorBanner.svelte";
-import FormField from "$lib/client/molecules/FormField.svelte";
-import SectionHeading from "$lib/client/SectionHeading.svelte";
-import PageHeading from "$lib/client/PageHeading.svelte";
-import ModePicker from "$lib/client/organisms/ModePicker.svelte";
-import CourseForm from "$lib/client/organisms/CourseForm.svelte";
-import AiCoursePreview from "$lib/client/organisms/AiCoursePreview.svelte";
+import { base } from "#lib/paths";
+import BackLink from "#lib/client/molecules/BackLink.svelte";
+import Button from "#lib/client/atoms/Button.svelte";
+import Input from "#lib/client/atoms/Input.svelte";
+import Select from "#lib/client/atoms/Select.svelte";
+import Textarea from "#lib/client/atoms/Textarea.svelte";
+import ErrorBanner from "#lib/client/atoms/ErrorBanner.svelte";
+import FormField from "#lib/client/molecules/FormField.svelte";
+import SectionHeading from "#lib/client/SectionHeading.svelte";
+import PageHeading from "#lib/client/PageHeading.svelte";
+import ModePicker from "#lib/client/organisms/ModePicker.svelte";
+import CourseForm from "#lib/client/organisms/CourseForm.svelte";
+import AiCoursePreview from "#lib/client/organisms/AiCoursePreview.svelte";
 
 let { form } = $props();
 const f = form as any;

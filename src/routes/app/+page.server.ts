@@ -1,6 +1,6 @@
-import { listCoursesForUser } from "$lib/server/repositories/courses";
-import { getReviewStats } from "$lib/server/services/scheduler";
-import { db } from "$lib/server/db/client";
+import { listCoursesForUser } from "#lib/server/repositories/courses";
+import { getReviewStats } from "#lib/server/services/scheduler";
+import { db } from "#lib/server/db/client";
 import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async ({ locals }) => {

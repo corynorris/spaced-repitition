@@ -1,15 +1,15 @@
 import { error } from "@sveltejs/kit";
 import { and, eq } from "drizzle-orm";
-import { getCourseForUser } from "$lib/server/repositories/courses";
-import { getDueCardsForCourse } from "$lib/server/repositories/notes";
-import { processReview } from "$lib/server/services/scheduler";
-import { reviewRatingInput } from "$lib/validation/review";
-import { db } from "$lib/server/db/client";
-import { cards, notes } from "$lib/server/db/schema";
+import { getCourseForUser } from "#lib/server/repositories/courses";
+import { getDueCardsForCourse } from "#lib/server/repositories/notes";
+import { processReview } from "#lib/server/services/scheduler";
+import { reviewRatingInput } from "#lib/validation/review";
+import { db } from "#lib/server/db/client";
+import { cards, notes } from "#lib/server/db/schema";
 import {
 	normalizeDisplayOptions,
 	normalizeLanguageProfile,
-} from "$lib/language/profiles";
+} from "#lib/language/profiles";
 import type { Actions, PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async ({ params, locals }) => {

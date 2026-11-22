@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { base } from "$app/paths";
-	import Badge from "$lib/client/atoms/Badge.svelte";
+	import { base } from "#lib/paths";
+	import Badge from "#lib/client/atoms/Badge.svelte";
 
 	let {
 		course,

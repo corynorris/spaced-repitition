@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { languageProfileSchema } from "$lib/language/profiles";
+import { languageProfileSchema } from "#lib/language/profiles";
 
 export const aiVocabularyItemSchema = z.object({
 	term: z.string().trim().min(1).max(250),

@@ -4,3 +4,8 @@ packages:
 
 allowBuilds:
   esbuild: true
+
+# drizzle-kit pulls the deprecated @esbuild-kit/esm-loader, which pins
+# esbuild 0.18 (GHSA-67mh-4wv8-2f99). Force the patched release.
+overrides:
+  esbuild: '>=0.25.12'

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from "$app/forms";
-	import { base } from "$app/paths";
-	import LinkButton from "$lib/client/atoms/LinkButton.svelte";
+	import { base } from "#lib/paths";
+	import LinkButton from "#lib/client/atoms/LinkButton.svelte";
 
 	let {
 		user,

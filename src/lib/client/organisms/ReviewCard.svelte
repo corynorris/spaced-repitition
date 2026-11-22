@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { labelForCardKind } from "$lib/cards/kinds";
-	import { parseFuriganaMarkup } from "$lib/language/japanese";
+	import { labelForCardKind } from "#lib/cards/kinds";
+	import { parseFuriganaMarkup } from "#lib/language/japanese";
 
 	let {
 		card,

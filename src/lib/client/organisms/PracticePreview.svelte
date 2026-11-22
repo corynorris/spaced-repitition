@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from "$app/forms";
-	import Button from "$lib/client/atoms/Button.svelte";
+	import Button from "#lib/client/atoms/Button.svelte";
 
 	let {
 		preview,

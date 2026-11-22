@@ -1,10 +1,10 @@
 import { json } from "@sveltejs/kit";
 import { z } from "zod";
-import { db } from "$lib/server/db/client";
-import { getCourseForUser } from "$lib/server/repositories/courses";
-import { listNotesForCourse } from "$lib/server/repositories/notes";
-import { discussContent } from "$lib/server/services/ai/generate";
-import { assertAiRateLimit } from "$lib/server/services/ai/rate-limit";
+import { db } from "#lib/server/db/client";
+import { getCourseForUser } from "#lib/server/repositories/courses";
+import { listNotesForCourse } from "#lib/server/repositories/notes";
+import { discussContent } from "#lib/server/services/ai/generate";
+import { assertAiRateLimit } from "#lib/server/services/ai/rate-limit";
 import type { RequestHandler } from "./$types";
 
 const inputSchema = z.object({

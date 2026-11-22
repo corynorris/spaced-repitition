@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { labelForCardKind } from "$lib/cards/kinds";
+	import { labelForCardKind } from "#lib/cards/kinds";
 
 	let {
 		card,

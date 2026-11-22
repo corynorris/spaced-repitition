@@ -1,5 +1,5 @@
 <script lang="ts">
-import HeroSection from "$lib/client/organisms/HeroSection.svelte";
+import HeroSection from "#lib/client/organisms/HeroSection.svelte";
 </script>
 
 <HeroSection

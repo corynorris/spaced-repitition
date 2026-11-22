@@ -1,9 +1,9 @@
 import { error, redirect } from "@sveltejs/kit";
-import { base } from "$app/paths";
-import { noteInput } from "$lib/validation/note";
-import { getCourseForUser } from "$lib/server/repositories/courses";
-import { createNoteWithCards } from "$lib/server/repositories/notes";
-import { db } from "$lib/server/db/client";
+import { base } from "#lib/paths";
+import { noteInput } from "#lib/validation/note";
+import { getCourseForUser } from "#lib/server/repositories/courses";
+import { createNoteWithCards } from "#lib/server/repositories/notes";
+import { db } from "#lib/server/db/client";
 import type { Actions, PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async ({ params, locals }) => {

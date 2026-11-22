@@ -1,4 +1,4 @@
-import { logger } from "$lib/server/logger";
+import { logger } from "#lib/server/logger";
 
 export interface LlmMessage {
 	role: "system" | "user" | "assistant";

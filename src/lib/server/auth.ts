@@ -3,8 +3,8 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { genericOAuth } from "better-auth/plugins";
 import { sveltekitCookies } from "better-auth/svelte-kit";
 import { getRequestEvent } from "$app/server";
-import { db } from "$lib/server/db/client";
-import * as schema from "$lib/server/db/schema";
+import { db } from "#lib/server/db/client";
+import * as schema from "#lib/server/db/schema";
 
 const issuer = process.env.ZITADEL_ISSUER?.replace(/\/+$/, "");
 const zitadelEnabled = Boolean(

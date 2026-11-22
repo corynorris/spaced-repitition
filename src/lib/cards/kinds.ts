@@ -1,9 +1,9 @@
-import { containsKanji } from "$lib/language/japanese";
+import { containsKanji } from "#lib/language/japanese";
 import type {
 	CardKind,
 	DisplayOptions,
 	LanguageProfile,
-} from "$lib/language/profiles";
+} from "#lib/language/profiles";
 
 export const V1_CARD_KINDS: CardKind[] = [
 	"recognition",

@@ -1,6 +1,6 @@
 <script lang="ts">
-import { base } from "$app/paths";
-import AppShell from "$lib/client/templates/AppShell.svelte";
+import { base } from "#lib/paths";
+import AppShell from "#lib/client/templates/AppShell.svelte";
 import "../styles.css";
 
 let { children, data } = $props();

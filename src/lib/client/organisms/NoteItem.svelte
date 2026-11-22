@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { parseFuriganaMarkup } from "$lib/language/japanese";
-	import Badge from "$lib/client/atoms/Badge.svelte";
+	import { parseFuriganaMarkup } from "#lib/language/japanese";
+	import Badge from "#lib/client/atoms/Badge.svelte";
 
 	let {
 		note,

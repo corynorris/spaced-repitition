@@ -1,5 +1,5 @@
 import { json } from "@sveltejs/kit";
-import { loadLlmConfig } from "$lib/server/services/llm";
+import { loadLlmConfig } from "#lib/server/services/llm";
 import type { RequestHandler } from "./$types";
 
 export const GET: RequestHandler = async ({ locals }) => {

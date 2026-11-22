@@ -9,21 +9,21 @@ const mocks = vi.hoisted(() => ({
 	listNotesForCourse: vi.fn(),
 }));
 
-vi.mock("$lib/server/db/client", () => ({ db: {} }));
+vi.mock("#lib/server/db/client", () => ({ db: {} }));
 
-vi.mock("$lib/server/services/ai/rate-limit", () => ({
+vi.mock("#lib/server/services/ai/rate-limit", () => ({
 	assertAiRateLimit: mocks.assertAiRateLimit,
 }));
 
-vi.mock("$lib/server/services/ai/generate", () => ({
+vi.mock("#lib/server/services/ai/generate", () => ({
 	discussContent: mocks.discussContent,
 }));
 
-vi.mock("$lib/server/repositories/courses", () => ({
+vi.mock("#lib/server/repositories/courses", () => ({
 	getCourseForUser: mocks.getCourseForUser,
 }));
 
-vi.mock("$lib/server/repositories/notes", () => ({
+vi.mock("#lib/server/repositories/notes", () => ({
 	listNotesForCourse: mocks.listNotesForCourse,
 }));
 

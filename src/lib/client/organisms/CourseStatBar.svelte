@@ -1,5 +1,5 @@
 <script lang="ts">
-	import StatBox from "$lib/client/molecules/StatBox.svelte";
+	import StatBox from "#lib/client/molecules/StatBox.svelte";
 
 	let {
 		totalCards,

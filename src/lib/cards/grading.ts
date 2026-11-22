@@ -1,4 +1,4 @@
-import { normalizeJapaneseAnswer } from "$lib/language/japanese";
+import { normalizeJapaneseAnswer } from "#lib/language/japanese";
 
 /**
  * Check whether a user's word-block ordering matches the correct order.

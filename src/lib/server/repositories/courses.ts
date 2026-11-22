@@ -1,12 +1,12 @@
 import { eq, and, desc } from "drizzle-orm";
-import { courses } from "$lib/server/db/schema";
-import type { Database } from "$lib/server/db/client";
-import type { CourseInput } from "$lib/validation/course";
+import { courses } from "#lib/server/db/schema";
+import type { Database } from "#lib/server/db/client";
+import type { CourseInput } from "#lib/validation/course";
 import {
 	defaultDisplayOptions,
 	normalizeDisplayOptions,
 	normalizeLanguageProfile,
-} from "$lib/language/profiles";
+} from "#lib/language/profiles";
 
 export async function listCoursesForUser(db: Database, userId: string) {
 	return db

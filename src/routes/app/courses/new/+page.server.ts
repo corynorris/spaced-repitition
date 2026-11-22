@@ -1,10 +1,10 @@
 import { fail, redirect } from "@sveltejs/kit";
-import { base } from "$app/paths";
-import { courseInput } from "$lib/validation/course";
-import { createCourseForUser } from "$lib/server/repositories/courses";
-import { aiCoursePreviewSchema } from "$lib/server/services/ai/schemas";
-import { persistGeneratedCourse } from "$lib/server/services/ai/persist";
-import { db } from "$lib/server/db/client";
+import { base } from "#lib/paths";
+import { courseInput } from "#lib/validation/course";
+import { createCourseForUser } from "#lib/server/repositories/courses";
+import { aiCoursePreviewSchema } from "#lib/server/services/ai/schemas";
+import { persistGeneratedCourse } from "#lib/server/services/ai/persist";
+import { db } from "#lib/server/db/client";
 import type { Actions } from "./$types";
 
 function isUniqueCourseTitleError(err: unknown) {

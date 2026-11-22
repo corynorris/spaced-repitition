@@ -3,7 +3,7 @@ import { buildSentenceCards, buildVocabularyCards } from "./kinds";
 import {
 	defaultDisplayOptions,
 	type DisplayOptions,
-} from "$lib/language/profiles";
+} from "#lib/language/profiles";
 
 describe("card builders", () => {
 	it("builds base vocabulary recognition and recall cards", () => {

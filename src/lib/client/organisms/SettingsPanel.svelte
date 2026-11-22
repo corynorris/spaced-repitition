@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from "$app/forms";
-	import { labelForCardKind } from "$lib/cards/kinds";
-	import Button from "$lib/client/atoms/Button.svelte";
+	import { labelForCardKind } from "#lib/cards/kinds";
+	import Button from "#lib/client/atoms/Button.svelte";
 
 	let {
 		course,

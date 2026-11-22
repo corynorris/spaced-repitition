@@ -20,7 +20,7 @@ export function assertAiRateLimit(userId: string, scope: string) {
 	if (current.count >= limit) {
 		const retryAfter = Math.ceil((current.resetAt - now) / 1000);
 		// Import lazily to avoid circular dependency concerns
-		import("$lib/server/logger").then(
+		import("#lib/server/logger").then(
 			({ logger }) =>
 				logger.rateLimitDenied({ userId, scope, windowMs }),
 			() => {},

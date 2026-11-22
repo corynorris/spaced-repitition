@@ -2,7 +2,7 @@ import { z } from "zod";
 import {
 	displayOptionsSchema,
 	languageProfileSchema,
-} from "$lib/language/profiles";
+} from "#lib/language/profiles";
 
 export const courseInput = z.object({
 	title: z.string().trim().min(1).max(120),
