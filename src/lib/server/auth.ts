@@ -11,12 +11,21 @@ const zitadelEnabled = Boolean(
 	issuer && process.env.ZITADEL_CLIENT_ID && process.env.ZITADEL_CLIENT_SECRET,
 );
 
-const baseURL = process.env.BETTER_AUTH_URL ?? "http://localhost:5173";
+const publicUrl = new URL(
+	process.env.BETTER_AUTH_URL ?? "http://localhost:5173",
+);
+
+// Better Auth treats a path in `baseURL` as the auth base and ignores
+// `basePath`, so keep `baseURL` at the origin and fold the app mount point
+// (e.g. /srs) into `basePath`. The endpoints then live at
+// <origin><app base>/api/auth/*, which is where the browser client calls.
+const baseURL = publicUrl.origin;
+const basePath = `${publicUrl.pathname.replace(/\/$/, "")}/api/auth`;
 
 export const auth = betterAuth({
 	appName: "Spaced Repetition",
 	baseURL,
-	basePath: "/api/auth",
+	basePath,
 	secret:
 		process.env.BETTER_AUTH_SECRET ?? "dev-secret-change-me-minimum-32-chars",
 	database: drizzleAdapter(db, {
